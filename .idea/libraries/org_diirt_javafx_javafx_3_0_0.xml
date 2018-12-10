@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="org.diirt.javafx:javafx:3.0.0" type="repository">
+    <properties maven-id="org.diirt.javafx:javafx:3.0.0" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/diirt/javafx/javafx/3.0.0/javafx-3.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
