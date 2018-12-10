@@ -53,3 +53,10 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+
+
+
+
+# Ignore Eclipse Project files
+.project
+.classpath
