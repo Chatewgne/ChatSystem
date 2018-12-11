@@ -21,7 +21,6 @@ public class ChatWindow extends JFrame implements ActionListener{
 	
 	private JPanel inputContainer = new JPanel();
 	private JTextField jtf = new JTextField();
-	private JPanel pan = new JPanel();
 	
 	private JTextArea chatBox;
 	
@@ -30,7 +29,7 @@ public class ChatWindow extends JFrame implements ActionListener{
 	
 	public ChatWindow(String windowName) {
 		
-		// Définition des propriétés de la fenêtre
+		// Dï¿½finition des propriï¿½tï¿½s de la fenï¿½tre
 		this.setTitle(windowName);
 		this.setSize(800, 600);
 		this.setResizable(true);
@@ -93,14 +92,22 @@ public class ChatWindow extends JFrame implements ActionListener{
 		ChatWindow f = new ChatWindow("ChatSystem");
 		
 	}
-	
-	
+
+
+	private String sendMessage() {
+
+		String msg = jtf.getText();
+		jtf.setText("");
+		chatBox.append("<< Me << : " + msg + "\n");
+ return msg;
+	}
+	//TODO : sendMessageInField deprecated by sendMessage();
 	private void sendMessageInField() {
 		
 		String msg = jtf.getText();
 		jtf.setText("");
 		chatBox.append("<< Me << : " + msg + "\n");
-		
+
 		//TODO
 		// Here, we should call/tell the system that
 		// we want to send the message in the JTextField input (jtf)

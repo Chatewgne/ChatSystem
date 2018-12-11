@@ -25,6 +25,7 @@ public class Conversation extends Thread {
 
     public void addMessage(Message message) {
         this.messages.add(message);
+
     }
 
 

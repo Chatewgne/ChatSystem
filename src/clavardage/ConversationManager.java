@@ -6,7 +6,10 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ConversationManager extends Thread {
 
@@ -14,9 +17,9 @@ public class ConversationManager extends Thread {
     private BufferedReader in;
     private BufferedWriter out;
     private Conversation conv;
+    private ChatWindow window;
 
     public ConversationManager(){}
-
     public ConversationManager(Socket sock){
         this.sock = sock ;
     }
@@ -67,10 +70,14 @@ public class ConversationManager extends Thread {
         }
     }
 
+
     private void receiveAndStoreMessage(){   //BLOQUANTE
-        String c = receiveMessage();
-        Message mess = new Message(c);
+        String textmess = receiveMessage();
+        Message mess = new Message(textmess);
         conv.addMessage(mess);
+       // DateFormat dateFormat  = new SimpleDateFormat("DD/MM HH:MM:SS") ;
+       // String date = dateFormat.format(mess.getDate());
+        window.displayReceivedMessage(mess.getContent());
     }
 
     private String receiveMessage(){   //BLOQUANTE
@@ -86,7 +93,32 @@ public class ConversationManager extends Thread {
     }
 
     public void run(){
-        try{
+
+        this.window = new ChatWindow("<<<Your Username Here Soon>>");
+        //TODO : coherent window name (with remote username)
+
+        ////////////////////////TEST LOCAL COMMUNICATION///////////////////////////////
+
+       try{
+            System.out.println("Sending ping...");
+            sendMessage("Ping");
+            try {
+                sleep(2000);
+            }
+            catch(Exception e) {
+                System.out.println("Convo couldn't sleep : " + e.toString());
+            }
+           // String c = receiveMessage();
+          //  System.out.println("ConvMan received : "+ c);
+           receiveAndStoreMessage();
+            System.out.println("ConvMan closing communication");
+            closeConversation();
+        } catch (Exception e) {
+            System.out.println("Error on conversation " + e.toString() );
+        }
+      ////////////////////////TEST LOCAL COMMUNICATION///////////////////////////////
+
+       /*try{
             System.out.println("Sending ping...");
             sendMessage("Ping");
             try {
@@ -101,7 +133,7 @@ public class ConversationManager extends Thread {
             closeConversation();
         } catch (Exception e) {
             System.out.println("Error on conversation " + e.toString() );
-        }
+        }*/
 
 
     }
