@@ -77,25 +77,12 @@ public class ChatWindow extends JFrame implements ActionListener{
        		for(int i = 0; i < 500; i++)
         	chatBox.append("HEY " + i + "\n");
         */
-		
-		
-		
-		
-		//Définition de sa couleur de fond
-	    //pan.setBackground(Color.ORANGE);        
-		
-	    
-	    
-	    
-	    
-	    
-	    // ###### TESTS
 	    
 		
-	    //On prévient notre JFrame que notre JPanel sera son content pane
+        // We tell our JFrame that the mainPanel is going to be its content pane
 	    this.setContentPane(inputContainer);
 	    
-	    // Rend la fenêtre visible
+	    // Set the JFrame visible
 	    this.setVisible(true);
 	    
 	}
