@@ -13,12 +13,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GraphicsConfiguration;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoggingWindow extends JFrame implements ActionListener{
+public class LoggingWindow extends JFrame implements ActionListener, NewMessageToSendEventGenerator{
 	
 	// Panel of this window/JFrame
 	private JPanel mainPanel = new JPanel();
@@ -31,6 +29,9 @@ public class LoggingWindow extends JFrame implements ActionListener{
 	
 	// Nickname chosen
 	private String nickname = "";
+	
+	// Extern listener
+	private NewMessageToSendListener listener;
 	
 	/** Class constructor, instanciate the logging window.
 	 * 
@@ -118,6 +119,12 @@ public class LoggingWindow extends JFrame implements ActionListener{
 		if(source == logButton || source == nicknameField) {
 			setNickname();
 		}
+	}
+
+
+	@Override
+	public void addNewMessageToSendListener(NewMessageToSendListener listener) {
+		this.listener = listener;
 	}
 
 }

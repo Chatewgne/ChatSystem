@@ -17,7 +17,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ChatWindow extends JFrame implements ActionListener{
+public class ChatWindow extends JFrame implements ActionListener, NewMessageToSendEventGenerator{
 	
 	private JPanel inputContainer = new JPanel();
 	private JTextField jtf = new JTextField();
@@ -25,6 +25,10 @@ public class ChatWindow extends JFrame implements ActionListener{
 	private JTextArea chatBox;
 	
 	private JButton sendButton = new JButton("Send");
+	
+	
+	// Extern listener
+	private NewMessageToSendListener listener;
 	
 	
 	public ChatWindow(String windowName) {
@@ -107,6 +111,8 @@ public class ChatWindow extends JFrame implements ActionListener{
 		String msg = jtf.getText();
 		jtf.setText("");
 		chatBox.append("<< Me << : " + msg + "\n");
+		listener.NewMessageToSend(new NewMessageToSendEvent(this, msg));
+		
 
 		//TODO
 		// Here, we should call/tell the system that
@@ -127,6 +133,12 @@ public class ChatWindow extends JFrame implements ActionListener{
 	
 	public void displayReceivedMessage(String msg) {
 		chatBox.append(">> Distant >> : " + msg + "\n");
+	}
+
+
+	@Override
+	public void addNewMessageToSendListener(NewMessageToSendListener listener) {
+		this.listener = listener;	
 	}
 
 }
