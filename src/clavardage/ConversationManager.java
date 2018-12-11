@@ -6,12 +6,9 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 
-public class ConversationManager extends Thread {
+
+public class ConversationManager extends Thread implements NewMessageToSendListener {
 
     private Socket sock;
     private BufferedReader in;
@@ -24,6 +21,9 @@ public class ConversationManager extends Thread {
         this.sock = sock ;
     }
 
+    public void NewMessageToSend(NewMessageToSendEvent evt){
+        sendMessage(evt.msg);
+    }
     public void closeConversation()
     {
         try {
@@ -95,10 +95,19 @@ public class ConversationManager extends Thread {
     public void run(){
 
         this.window = new ChatWindow("<<<Your Username Here Soon>>");
+        window.addNewMessageToSendListener(this);
         //TODO : coherent window name (with remote username)
 
         ////////////////////////TEST LOCAL COMMUNICATION///////////////////////////////
 
+        while(true) {
+            try{
+                receiveAndStoreMessage();
+        } catch (Exception e) {
+            System.out.println("Error on conversation " + e.toString() );
+        }
+        }
+       /*
        try{
             System.out.println("Sending ping...");
             sendMessage("Ping");
@@ -110,7 +119,7 @@ public class ConversationManager extends Thread {
             }
            // String c = receiveMessage();
           //  System.out.println("ConvMan received : "+ c);
-           receiveAndStoreMessage();
+            receiveAndStoreMessage();
             System.out.println("ConvMan closing communication");
             closeConversation();
         } catch (Exception e) {
