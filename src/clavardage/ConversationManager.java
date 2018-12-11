@@ -13,8 +13,9 @@ public class ConversationManager extends Thread {
     private Socket sock;
     private BufferedReader in;
     private BufferedWriter out;
+    private Conversation conv;
 
-    public ConversationManager(){};
+    public ConversationManager(){}
 
     public ConversationManager(Socket sock){
         this.sock = sock ;
@@ -36,49 +37,69 @@ public class ConversationManager extends Thread {
             this.sock=socket;
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+            //TODO retrieve correct userid
+            this.conv = new Conversation("First","Second");
         } catch (Exception e) {
-            System.out.println("Conversation exception :" + e.toString());
+            System.out.println("Failed accepting convo:" + e.toString());
         }
         this.run();
     }
     public void initConvo(String ip, int port){
-
         try {
             System.out.println("Initiating convo from socket " + ip + " "+ port);
             this.sock = new Socket(ip, port);
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+            //TODO retrieve correct userid
+            this.conv = new Conversation("First","Second");
                     } catch (Exception e) {
-            System.out.println("Fail initiation conv Conversation exception :" + e.toString());
+            System.out.println("Failed initiating conversation :" + e.toString());
         }
+    }
+    private void sendMessage(String mess)
+    {
+        try {
+            out.write(mess + "\n");
+            out.flush();
+        }
+        catch (Exception e) {
+            System.out.println("Coulnd't send message :" + e.toString());
+        }
+    }
+
+    private void receiveAndStoreMessage(){   //BLOQUANTE
+        String c = receiveMessage();
+        Message mess = new Message(c);
+        conv.addMessage(mess);
+    }
+
+    private String receiveMessage(){   //BLOQUANTE
+        String c ="";
+        {
+            try {
+                c = in.readLine();
+            } catch (Exception e) {
+                System.out.println("Coulnd't read message :" + e.toString());
+            }
+        }while(c==null);
+        return c;
     }
 
     public void run(){
         try{
-            System.out.println("Conv sending ping");
-            // EQUIVALENT AUX DEUX LIGNES : out.println("truc");
-            this.out.write("Ping"+"\n");
-            out.flush();
-
+            System.out.println("Sending ping...");
+            sendMessage("Ping");
             try {
                 sleep(2000);
             }
-            catch(Exception e){
+            catch(Exception e) {
                 System.out.println("Convo couldn't sleep : " + e.toString());
             }
-            System.out.println("Conv signaling end");
-            out.write("end"+"\n");
-            out.flush();
-            try {
-                sleep(2000);
-            }
-            catch(Exception e){
-                System.out.println("Convo couldn't sleep : " + e.toString());
-            }
-            System.out.println("Conv got : "+ in.readLine());
-            System.out.println("Conv closing communication");
-            sock.close();
-        } catch (java.io.IOException e) {
+            String c = receiveMessage();
+            System.out.println("ConvMan received : "+ c);
+            System.out.println("ConvMan closing communication");
+            closeConversation();
+        } catch (Exception e) {
             System.out.println("Error on conversation " + e.toString() );
         }
 
