@@ -20,7 +20,7 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 	
 	// Panel of this window/JFrame
 	private JPanel mainPanel = new JPanel();
-	
+	private User localUser ;
 	
 	// Components of the panel
 	private JLabel topLabel = new JLabel("Choose a nickname to identify yourself in the chat system.");
@@ -39,7 +39,7 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 	 */
 	public LoggingWindow(String windowName) {
 		
-		// Définition des propriétés de la fenêtre
+		// Dï¿½finition des propriï¿½tï¿½s de la fenï¿½tre
 		this.setTitle(windowName);
 		this.setSize(400, 150);
 		this.setResizable(false);
