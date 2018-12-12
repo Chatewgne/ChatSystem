@@ -37,7 +37,7 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 		this.setTitle(windowName);
 		this.setSize(800, 600);
 		this.setResizable(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		
 		
@@ -97,15 +97,10 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 		
 	}
 
-
-	private String sendMessage() {
-
-		String msg = jtf.getText();
-		jtf.setText("");
-		chatBox.append("<< Me << : " + msg + "\n");
- return msg;
+	public void displayInfo(String mess){
+		chatBox.append( "--- " + mess + " ---\n");
 	}
-	//TODO : sendMessageInField deprecated by sendMessage();
+
 	private void sendMessageInField() {
 		
 		String msg = jtf.getText();

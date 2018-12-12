@@ -42,16 +42,12 @@ public class User implements LocalUsernameChangedGenerator {
         this.convos = convos;
     }
 
-    private ArrayList<LocalUsernameChangedListener> localUsernameChangedListener = new ArrayList<LocalUsernameChangedListener>();
+    private LocalUsernameChangedListener localUsernameChangedListener ;
     private void FireLocalUsernameChangedEvent(LocalUsernameChangedEvent e){
-        int j = localUsernameChangedListener.size();
-        if (j==0) {return;}
-        for(int i=0;i<j;i++){
-            localUsernameChangedListener.get(i).localUsernameChanged(e);
-        }
+            localUsernameChangedListener.localUsernameChanged(e);
     }
     public void addLocalUsernameChangedListener(LocalUsernameChangedListener listener){
-        localUsernameChangedListener.add(listener);
+        localUsernameChangedListener = listener;
     }
 
 }
