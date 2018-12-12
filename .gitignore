@@ -60,3 +60,6 @@ local.properties
 # Ignore Eclipse Project files
 .project
 .classpath
+.idea/*
+
+.idea/**
