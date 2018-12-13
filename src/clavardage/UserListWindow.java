@@ -8,18 +8,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class UserListWindow extends JFrame implements UserListGUIEventGenerator, MouseListener {
+public class UserListWindow extends JFrame implements UserListGUIEventGenerator, UserPanelEventListener, ActionListener {
 
 
     private static JPanel globalContainer = new JPanel();
 
-    private JPanel userPanel = new JPanel();
-
     private static JPanel usersPane = new JPanel(new GridLayout(0,1, 0 , 20));
-    private JScrollPane userScrollPane = new JScrollPane();
+    private JScrollPane userScrollPane = new JScrollPane(usersPane);
 
 
-    // Personal settings panel
+    /*  Personal settings panel
+        It contains the actual nickname in a label,
+        and a button to ask for a nickname change.
+     */
     private JPanel personalPanel = new JPanel();
     private JLabel nicknameLabel = new JLabel("Your nickname : ?");
     private JButton changeNicknameButton = new JButton("Change nickname");
@@ -34,33 +35,37 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
         // Defining window properties
         this.setTitle("ChatSystem : Online user list");
         this.setSize(500, 800);
-        this.setResizable(false);
+        //this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
         globalContainer.setLayout(new BorderLayout());
 
-        /*JLabel aUser = new JLabel("User?");
-        aUser.setMinimumSize(new Dimension(0,50));*/
 
-        UserPanel aUser = new UserPanel( new User("Quelqu'un") );
-        aUser.addMouseListener(this);
-
-        usersPane.add(aUser);
-
-        userScrollPane = new JScrollPane(usersPane);
-
-        personalPanel.setLayout(new BorderLayout());
-        personalPanel.add(nicknameLabel, BorderLayout.WEST);
-        personalPanel.add(changeNicknameButton, BorderLayout.EAST);
-
+        // Add the list of users to the container of the JFrame
         globalContainer.add(userScrollPane, BorderLayout.CENTER);
+
+        // Setup then add the personal information panel to the global container
+        setupPersonalPanel();
         globalContainer.add(personalPanel, BorderLayout.SOUTH);
+
 
 
         this.setContentPane(globalContainer);
         this.setVisible(true);
 
+    }
+
+    /*  Setup the personal panel (the one at the bottom of the user list)
+        In particular, add an action listener on the changeNicknameButton
+     */
+    private void setupPersonalPanel(){
+        personalPanel.setLayout(new BorderLayout());
+
+        changeNicknameButton.addActionListener(this);
+
+        personalPanel.add(nicknameLabel, BorderLayout.WEST);
+        personalPanel.add(changeNicknameButton, BorderLayout.EAST);
     }
 
 
@@ -70,6 +75,7 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
     public static void main (String args[]) throws InterruptedException{
         UserListWindow userListWindow = new UserListWindow();
 
+        /*
         while(true){
             Thread.sleep(100);
 
@@ -79,6 +85,7 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
 
             globalContainer.validate();
         }
+        */
 
     }
 
@@ -96,7 +103,9 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
         if(userModification ==  "?"){
 
             UserPanel newUserPanel = new UserPanel(user);
-            newUserPanel.addMouseListener(this);
+            newUserPanel.addUserPanelEventListener(this);
+
+            System.out.println("????");
 
             usersPane.add(newUserPanel);
             globalContainer.validate();
@@ -106,39 +115,18 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
     }
 
 
+
     @Override
-    public void mouseClicked(MouseEvent e) {
-        Object source = e.getSource();
-
-        if(source instanceof UserPanel){
-
-            UserPanel userPanel = (UserPanel) source;
-
-            this.userListGUIEventListener.requestFromGUIToEngageSession(
-                    new RequestFromGUIToEngageSessionEvent(userPanel.getUserID())
-            );
-
-        }
-
+    public void engageSessionButtonRequest(String userID) {
+        this.userListGUIEventListener.sessionRequestFromGUI(userID);
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
+    /*  Listens to the "Change nickname" button
+        and tells the UserListGUIListener that this window asks for a new nickname
+     */
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == changeNicknameButton)
+            this.userListGUIEventListener.newNicknameRequestFromGUI();
     }
 }
