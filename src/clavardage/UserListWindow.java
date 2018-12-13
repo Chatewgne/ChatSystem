@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class UserListWindow extends JFrame implements UserListGUIEventGenerator, UserPanelEventListener, ActionListener {
 
@@ -96,26 +99,34 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
     }
 
 
-    /*  Modify the user list in the GUI according to the parameters
-        /!\ NOT FINISHED
+    /*  Refresh the user list window according to the hashmap given in parameter
      */
-    public void modifyUserList(User user, String userModification){
+    public void refreshUserListInGUI(HashMap<String,User> onlineUsers){
 
-        if(userModification ==  "?"){
+        usersPane.removeAll();
 
-            UserPanel newUserPanel = new UserPanel(user);
+
+        UserPanel newUserPanel;
+
+        Iterator entries = onlineUsers.entrySet().iterator();
+        while (entries.hasNext()){
+            Map.Entry entry = (Map.Entry)entries.next();
+            newUserPanel = new UserPanel( (User) entry.getValue() );
             newUserPanel.addUserPanelEventListener(this);
-
-            System.out.println("????");
-
             usersPane.add(newUserPanel);
-            globalContainer.validate();
-
         }
+
+        globalContainer.validate();
 
     }
 
 
+    /*
+        Refresh the nickname label in this window
+     */
+    public void refreshNicknameLabel(String newNickname){
+        nicknameLabel.setText("Your nickname : " + newNickname);
+    }
 
     @Override
     public void engageSessionButtonRequest(String userID) {
