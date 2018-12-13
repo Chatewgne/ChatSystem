@@ -95,6 +95,7 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 		UIManager.setLookAndFeel(lookandfeel);
 			MetalLookAndFeel.setCurrentTheme(new OceanTheme());
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
+			JFrame.setDefaultLookAndFeelDecorated(true);
 			ChatWindow f = new ChatWindow("ChatSystem");
 		}
 		catch (Exception e){

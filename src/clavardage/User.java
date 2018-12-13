@@ -10,6 +10,11 @@ public class User implements LocalUsernameChangedGenerator {
     private String username ;
     private ArrayList<Conversation> convos ;
 
+    public User(String id, String username){
+        this.id = id ;
+        this.username = username;
+    }
+
     public User(String username){
         this.username = username;
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");

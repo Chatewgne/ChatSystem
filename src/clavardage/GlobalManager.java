@@ -2,6 +2,11 @@ package clavardage;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.URL;
 
 public class GlobalManager implements WindowListener{
     private UserListWindow userListWindow ;
@@ -23,6 +28,20 @@ public class GlobalManager implements WindowListener{
         bs.run();
 
     }
+
+  /*  private String getMyIp(){
+        String myip = "";
+       try {
+         //   URL url = new URL("http://checkip.amazonaws.com/");
+           // BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+            //myip= (br.readLine());
+         //  myip = InetAddress.getLocalHost().getHostAddress();
+           DatagramPacket packet = new DatagramPacket()
+        } catch (Exception e){
+            System.out.println("Couldn't retrieve my IP adress: "+e.toString());
+        }
+        return myip;
+    }*/
 
     public void windowDeactivated(WindowEvent e){}
     public void windowActivated(WindowEvent e){}

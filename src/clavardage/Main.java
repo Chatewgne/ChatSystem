@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args) {
 	/////////////////////// TEST DE COMMUNICATION TCP EN LOCAL//////////*
 
+
     /*    System.out.println("coucou je suis le main");
 
 	ConversationManager ma = (new ConversationManager());
