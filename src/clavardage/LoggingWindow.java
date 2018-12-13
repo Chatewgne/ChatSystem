@@ -16,7 +16,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoggingWindow extends JFrame implements ActionListener, NewMessageToSendEventGenerator{
+public class LoggingWindow extends JFrame implements ActionListener, NewMessageToSendEventGenerator, LogInEventGenerator{
 	
 	// Panel of this window/JFrame
 	private JPanel mainPanel = new JPanel();
@@ -32,7 +32,7 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 	
 	// Extern listener
 	private NewMessageToSendListener listener;
-	
+	private LogInListener list;
 	/** Class constructor, instanciate the logging window.
 	 * 
 	 * @param windowName name of the window
@@ -84,16 +84,19 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 		
 	    // We tell our JFrame that the mainPanel is going to be its content pane
 	    this.setContentPane(mainPanel);
-	    
-	    // Set the JFrame visible
-	    this.setVisible(true);
-	    
+
+		// Set the JFrame visible
+		//this.setVisible(true);
+
 	}
 	
 	
-	public static void main (String args[]) {
-		
-		LoggingWindow f = new LoggingWindow("ChatSystem - Logging");
+	//public static void main (String args[]) {
+	public void start(){
+//		Set the JFrame visible
+		this.setVisible(true);
+
+		//LoggingWindow f = new LoggingWindow("ChatSystem - Logging");
 		
 	}
 	
@@ -102,6 +105,7 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 		
 		nickname = nicknameField.getText();
 		System.out.println("NEW NICKNAME : " + nickname);
+		list.loggedIn(new LogInEvent(this, nickname));
 	}
 	
 	public String getNickname() {
@@ -125,6 +129,10 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 	@Override
 	public void addNewMessageToSendListener(NewMessageToSendListener listener) {
 		this.listener = listener;
+	}
+	@Override
+	public void addLogInListener(LogInListener listener) {
+		this.list = listener;
 	}
 
 }
