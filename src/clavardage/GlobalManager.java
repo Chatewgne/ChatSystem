@@ -6,9 +6,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.URL;
 
-public class GlobalManager implements WindowListener{
+public class GlobalManager implements WindowListener,UserListGUIEventListener {
     private UserListWindow userListWindow ;
     private LoggingWindow logWindow;
     private BroadcastServer bs;
@@ -20,6 +21,13 @@ public class GlobalManager implements WindowListener{
         this.localUser = new User(""); //TODO retrieve nickname on login
         this.bs = new BroadcastServer(logWindow);
         this.cs  = new ConversationServer();
+    }
+
+    public void newNicknameRequestFromGUI(){}
+
+    public void sessionRequestFromGUI(String userID){
+        User u = bs.getUserFromId(Integer.parseInt(userID)) ;
+        cs.openNewConversation(u);
     }
 
     public void start(){

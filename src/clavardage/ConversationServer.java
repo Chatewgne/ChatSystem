@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class ConversationServer extends Thread{
+public class ConversationServer extends Thread {
     private static ArrayList<ConversationManager> convos;
     private static ServerSocket servsock ;
 
@@ -33,6 +33,7 @@ public class ConversationServer extends Thread{
             System.out.println("Conversation Server error : "+ e.toString());
         }
     }
+
     public static void waitForConnection(){
         try {
             System.out.println("Waiting for connection on :" +servsock.toString());
@@ -46,10 +47,13 @@ public class ConversationServer extends Thread{
         }
 
     }
-    private static void openNewConversation(Socket sock){
-        convos.add(new ConversationManager(sock));
+    public static void openNewConversation(User user){
+
+        convos.add(new ConversationManager());
+        convos.get(convos.size()-1).initConvo(user.getIP(),servsock.getLocalPort());
         //TODO raise new conversation opened
     }
+
 
     private static void closeConversation(int Num){
         convos.get(Num).closeConversation();
@@ -60,9 +64,7 @@ public class ConversationServer extends Thread{
    // public static void main(String[] args) {
     public void run(){
         try {
-            int freeport = findFreePort();
-            if (freeport == -1) throw new Exception("Free port error in Conversation Manager");
-            initServer(freeport);
+            initServer(4321);
             waitForConnection();
         }
         catch (Exception e) {

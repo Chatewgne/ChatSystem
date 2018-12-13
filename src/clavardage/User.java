@@ -8,16 +8,21 @@ public class User implements LocalUsernameChangedGenerator {
 //TODO is abstract correct ? Why ?
     private String id ;
     private String username ;
+    private String ip;
     private ArrayList<Conversation> convos ;
 
-    public User(String id, String username){
+    public User(String id, String username, String ip){
         this.id = id ;
         this.username = username;
+        this.ip = ip;
+    }
+    public String getIP(){
+        return this.ip;
     }
 
     public User(String username){
         this.username = username;
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         Date date = new Date();
         this.id = dateFormat.format(date);
     }
