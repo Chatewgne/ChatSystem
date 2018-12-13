@@ -1,11 +1,8 @@
 package clavardage;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.OceanTheme;
 import javax.swing.text.DefaultCaret;
 
 import java.awt.BorderLayout;
@@ -16,7 +13,6 @@ import java.awt.GraphicsConfiguration;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 public class ChatWindow extends JFrame implements ActionListener, NewMessageToSendEventGenerator{
 	
 	private JPanel inputContainer = new JPanel();
@@ -29,10 +25,12 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 	
 	// Extern listener
 	private NewMessageToSendListener listener;
-	
-	
+	final static String LOOKANDFEEL = "Metal";
+
+
 	public ChatWindow(String windowName) {
-		
+
+
 		// D�finition des propri�t�s de la fen�tre
 		this.setTitle(windowName);
 		this.setSize(800, 600);
@@ -92,9 +90,16 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 	
 	
 	public static void main (String args[]) {
-		
-		ChatWindow f = new ChatWindow("ChatSystem");
-		
+		try {
+		String lookandfeel = "javax.swing.plaf.metal.MetalLookAndFeel";
+		UIManager.setLookAndFeel(lookandfeel);
+			MetalLookAndFeel.setCurrentTheme(new OceanTheme());
+			UIManager.setLookAndFeel(new MetalLookAndFeel());
+			ChatWindow f = new ChatWindow("ChatSystem");
+		}
+		catch (Exception e){
+		}
+
 	}
 
 	public void displayInfo(String mess){

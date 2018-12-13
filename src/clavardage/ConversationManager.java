@@ -85,6 +85,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
                     } catch (Exception e) {
             System.out.println("Failed initiating conversation :" + e.toString());
         }
+        this.run();
     }
     private void sendMessage(String mess)
     {

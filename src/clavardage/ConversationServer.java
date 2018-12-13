@@ -56,7 +56,8 @@ public class ConversationServer extends Thread{
         //TODO raise conversation closed
     }
 
-    public static void main(String[] args) {
+   // public static void main(String[] args) {
+    public void run(){
         try {
             int freeport = findFreePort();
             if (freeport == -1) throw new Exception("Free port error in Conversation Manager");
