@@ -74,16 +74,16 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
             source = packet.getAddress();
             System.out.println("Recu UDP datagram " + receive + "from host : " + source.toString() );
         if (!(source.toString()==myip)) {
-            String[] str = receive.split(":");
-            if (str[0].equals("CO")) { //if someone connected to the system
-                if (str[1].equals(localUser.getID())){ //if this is my own connection packet, remember my IP adress
+            String[] str = receive.split(":"); //array stores information : str[1] is packet type (CO,IN,CH,QU)
+            if (str[0].equals("CO")) { //if someone connected to the system (packet CO) then
+                if (str[1].equals(localUser.getID())){ //if this is my own connection packet (str[1] = my own id) , remember my IP adress
                     myip = source.toString();
                     System.out.println("My ip is : " + myip);
-                }else {//if this is not my connection packet, send then information about the system
-                    String answer = "IN:" + system.toString();
+                }else {//if this connection packet is from someone else, send them information about the system (list of users and their addresses : remote users + myself
+                    String answer = "IN:" + system.toString() + ":" + myself() ;
                     system.addOnlineUser(source.toString(), new User(str[1], str[2]));
                     sendMessage(answer, source);
-                    System.out.println("Sent UDP datagram " + answer);
+                    System.out.println("Sent UDP datagram " + answer + "to host " + source);
                 }
             } else if (str[0].equals("CH")) { //TODO if someone changed name
             } else if (str[0].equals("QU")) {//TODO if someone disconnected
@@ -100,6 +100,9 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
         return receive;
     }
 
+    private String myself(){
+        return myip + ":" + localUser.getID() + ":" + localUser.getUsername();
+    }
     private String getMyip(){
         String str = "empty_ip";
         InetAddress adr ;
