@@ -107,7 +107,6 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
 
         usersPane.removeAll();
 
-
         UserPanel newUserPanel;
 
         Iterator entries = onlineUsers.entrySet().iterator();
@@ -118,7 +117,9 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
             usersPane.add(newUserPanel);
         }
 
-        globalContainer.validate();
+        usersPane.revalidate();
+        usersPane.repaint();
+
 
     }
 
