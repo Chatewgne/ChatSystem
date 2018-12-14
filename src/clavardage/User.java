@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 public class User implements LocalUsernameChangedGenerator {
-//TODO is abstract correct ? Why ?
+
     private String id ;
     private String username ;
     private String ip;

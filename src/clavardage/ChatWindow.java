@@ -19,7 +19,8 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 	private JTextField jtf = new JTextField();
 	
 	private JTextArea chatBox;
-	
+	private String myusername;
+	private String remoteuser ;
 	private JButton sendButton = new JButton("Send");
 	
 	
@@ -28,9 +29,10 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 	final static String LOOKANDFEEL = "Metal";
 
 
-	public ChatWindow(String windowName) {
+	public ChatWindow(String windowName, String remote, String local) {
 
-
+		this.myusername = local;
+		this.remoteuser = remote;
 		// D�finition des propri�t�s de la fen�tre
 		this.setTitle(windowName);
 		this.setSize(800, 600);
@@ -84,7 +86,7 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 	    this.setContentPane(inputContainer);
 	    
 	    // Set the JFrame visible
-	    this.setVisible(true);
+	  //  this.setVisible(true);
 	    
 	}
 	
@@ -96,7 +98,7 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 			MetalLookAndFeel.setCurrentTheme(new OceanTheme());
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
 			JFrame.setDefaultLookAndFeelDecorated(true);
-			ChatWindow f = new ChatWindow("ChatSystem");
+			ChatWindow f = new ChatWindow("ChatSystem","DEBUG","DEBUG");
 		}
 		catch (Exception e){
 		}
@@ -111,7 +113,7 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 		
 		String msg = jtf.getText();
 		jtf.setText("");
-		chatBox.append("<< Me << : " + msg + "\n");
+		chatBox.append("<< "+myusername+" << : " + msg + "\n");
 		listener.NewMessageToSend(new NewMessageToSendEvent(this, msg));
 		
 
@@ -133,7 +135,7 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 	
 	
 	public void displayReceivedMessage(String msg) {
-		chatBox.append(">> Distant >> : " + msg + "\n");
+		chatBox.append(">> "+remoteuser +" >> : " + msg + "\n");
 	}
 
 

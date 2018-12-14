@@ -23,7 +23,6 @@ public class ConversationServer extends Thread {
         }
         return res;
     }
-    //TODO this is not correct Object Oriented
 
     public static void initServer(int port){
         try {
@@ -47,20 +46,17 @@ public class ConversationServer extends Thread {
         }
 
     }
-    public static void openNewConversation(User user){
-        ConversationManager convman = new ConversationManager();
-        convman.initConvo(user.getIP(),servsock.getLocalPort());
+    public static void openNewConversation(User remoteuser, String mynickname){
+        ConversationManager convman = new ConversationManager(remoteuser.getUsername(),mynickname);
+        convman.initConvo(remoteuser.getIP(),servsock.getLocalPort());
         convos.add(convman);
        // convos.get(convos.size()-1).initConvo(user.getIP(),servsock.getLocalPort());
-
-        //TODO raise new conversation opened
     }
 
 
     private static void closeConversation(int Num){
         convos.get(Num).closeConversation();
         convos.remove(Num);
-        //TODO raise conversation closed
     }
 
    // public static void main(String[] args) {

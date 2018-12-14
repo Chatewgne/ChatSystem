@@ -111,7 +111,7 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 		for (int i = 0 ; i < list.size(); i++) {
 			list.get(i).loggedIn(e);
 		}
-		this.setVisible(false); //TODO is this okay ? Célia
+		this.setVisible(false);
 	}
 	
 	public String getNickname() {

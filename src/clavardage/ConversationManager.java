@@ -22,7 +22,11 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
     private ChatWindow window;
 
     public ConversationManager(){
+        //  this.window.addWindowListener(this);
+    }
+    public ConversationManager(String remote, String local){
       //  this.window.addWindowListener(this);
+        this.window = new ChatWindow("-- You are speaking to "+remote +"--",remote,local);
     }
     public ConversationManager(Socket sock){
         this.sock = sock ;
@@ -81,7 +85,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
             //TODO retrieve correct userid
-            this.conv = new Conversation("First","Second");
+            this.conv = new Conversation("first","Second");
                     } catch (Exception e) {
             System.out.println("Failed initiating conversation :" + e.toString());
         }
@@ -132,10 +136,10 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
 
     public void run(){
 
-        this.window = new ChatWindow("<<<Your Username Here Soon>>");
+
+        this.window.setVisible(true);
         this.window.addWindowListener(this);
         window.addNewMessageToSendListener(this);
-        //TODO : coherent window name (with remote username)
 
         ////////////////////////TEST LOCAL COMMUNICATION///////////////////////////////
 

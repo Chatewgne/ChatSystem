@@ -37,7 +37,7 @@ public class GlobalManager implements WindowListener,UserListGUIEventListener, L
     }
     public void sessionRequestFromGUI(String userID){
         User u = bs.getUserFromId(userID) ;
-        cs.openNewConversation(u);
+        cs.openNewConversation(u, bs.getLocalUserame());
     }
 
     public void start(){
