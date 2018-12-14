@@ -26,16 +26,16 @@ public class GlobalManager implements WindowListener,UserListGUIEventListener, L
     }
 
     public void newNicknameRequestFromGUI(){
-
     }
 
     public void loggedIn(LogInEvent logged){
         bs.loggedIn(logged);
         this.userListWindow = new UserListWindow(bs.getLocalUserame());
+        this.userListWindow.addUserListGUIEventListener(this);
         this.userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
     }
     public void sessionRequestFromGUI(String userID){
-        User u = bs.getUserFromId(Integer.parseInt(userID)) ;
+        User u = bs.getUserFromId(userID) ;
         cs.openNewConversation(u);
     }
 

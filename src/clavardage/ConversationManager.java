@@ -72,7 +72,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
         } catch (Exception e) {
             System.out.println("Failed accepting convo:" + e.toString());
         }
-        this.run();
+        this.start();
     }
     public void initConvo(String ip, int port){
         try {
@@ -85,7 +85,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
                     } catch (Exception e) {
             System.out.println("Failed initiating conversation :" + e.toString());
         }
-        this.run();
+        this.start();
     }
     private void sendMessage(String mess)
     {

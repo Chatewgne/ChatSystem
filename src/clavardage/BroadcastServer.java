@@ -77,7 +77,7 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
         System.out.println("Broadcast server detected local username changed to : " + whochanged.getUsername());
     }
 
-    public User getUserFromId(int userid) {
+    public User getUserFromId(String userid) {
         return system.getUser(userid);
     }
 
@@ -105,7 +105,7 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
             } else if (str[0].equals("CH")) { //TODO if someone changed name
             } else if (str[0].equals("QU")) {//TODO if someone disconnected
             } else if (str[0].equals("IN")) {//TODO if someone is responding with some information
-treatInformationPacket(str);
+                treatInformationPacket(str);
             } else {
                 System.out.println("~~~~~~~ Recu UDP datagram AU FORMAT INCONNU ~~~~~~~~ " + receive);
             }
@@ -122,7 +122,9 @@ treatInformationPacket(str);
             system.setCurrentConversations(Integer.parseInt(str[1]));
             for (int i = 2; i < str.length - 1; i+=3){
                 if(!(str[i+1].equals(localUser.getID()))) { //dont add yourself
-                    system.addOnlineUser(str[i + 1], new User(str[i + 1], str[i + 2], str[i])); // hasmap  : key = id, user(id,username,ip)
+                    String[] ip = str[i].split("/");
+                    String theip = ip[1];
+                    system.addOnlineUser(str[i + 1], new User(str[i + 1], str[i + 2], theip)); // hasmap  : key = id, user(id,username,ip)
                 }
                 }
             dropInformationPackets=true;

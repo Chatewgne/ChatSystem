@@ -48,9 +48,11 @@ public class ConversationServer extends Thread {
 
     }
     public static void openNewConversation(User user){
+        ConversationManager convman = new ConversationManager();
+        convman.initConvo(user.getIP(),servsock.getLocalPort());
+        convos.add(convman);
+       // convos.get(convos.size()-1).initConvo(user.getIP(),servsock.getLocalPort());
 
-        convos.add(new ConversationManager());
-        convos.get(convos.size()-1).initConvo(user.getIP(),servsock.getLocalPort());
         //TODO raise new conversation opened
     }
 

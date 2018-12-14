@@ -25,7 +25,7 @@ public class SystemState implements UserListChangesEventGenerator{
         return onlineUsers;
     }
 
-    public User getUser(int i){
+    public User getUser(String i){
         return onlineUsers.get(i);
     }
     public int getCurrentConversations() {
