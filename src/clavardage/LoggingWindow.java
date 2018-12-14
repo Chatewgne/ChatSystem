@@ -15,6 +15,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class LoggingWindow extends JFrame implements ActionListener, NewMessageToSendEventGenerator, LogInEventGenerator{
 	
@@ -32,7 +33,7 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 	
 	// Extern listener
 	private NewMessageToSendListener listener;
-	private LogInListener list;
+	private ArrayList<LogInListener> list;
 	/** Class constructor, instanciate the logging window.
 	 * 
 	 * @param windowName name of the window
@@ -45,6 +46,7 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
+		this.list = new ArrayList<LogInListener>();
 		
 		
 		// Panel layout configuration
@@ -105,7 +107,10 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 		
 		nickname = nicknameField.getText();
 		System.out.println("NEW NICKNAME : " + nickname);
-		list.loggedIn(new LogInEvent(this, nickname));
+		LogInEvent e = new LogInEvent(this, nickname);
+		for (int i = 0 ; i < list.size(); i++) {
+			list.get(i).loggedIn(e);
+		}
 		this.setVisible(false); //TODO is this okay ? Célia
 	}
 	
@@ -133,7 +138,7 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 	}
 	@Override
 	public void addLogInListener(LogInListener listener) {
-		this.list = listener;
+		this.list.add(listener);
 	}
 
 }

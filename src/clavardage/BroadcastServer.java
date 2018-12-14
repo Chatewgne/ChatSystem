@@ -5,7 +5,7 @@ import java.lang.reflect.Array;
 import java.net.*;
 import java.util.HashMap;
 
-public class BroadcastServer extends Thread implements LocalUsernameChangedListener, LogInListener {
+public class BroadcastServer extends Thread implements LocalUsernameChangedListener{
 
     private SystemState system;
     private User localUser;
@@ -14,13 +14,12 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
     private byte[] in;
     private String myip;
     private boolean dropInformationPackets ; //I only need to accept one information packet at log in
-
+  //  private boolean firs
 
     //TODO where is the localUser meant to be between here and GlobalManager
-    public BroadcastServer(LoggingWindow win) {
+    public BroadcastServer() {
         system = new SystemState();
       initSocket();
-        win.addLogInListener(this);
         this.in = new byte[256];
         this.out = new byte[256];
         this.dropInformationPackets = false ;
@@ -28,6 +27,10 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
 
     public HashMap<String,User> getOnlineUsers(){
         return system.getOnlineUsers();
+    }
+
+    public String getLocalUserame(){
+        return localUser.getUsername();
     }
 
     private void initSocket()
@@ -42,6 +45,9 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
         try {
             localUser = new User(logged.name);
             broadcastLocalConnection(localUser);
+            broadcastLocalConnection(new User("22","Nawal Guermouche"));//TODO THIS IS A DEBUG LINE ONLY
+            broadcastLocalConnection(new User("445","Pipoudou"));//TODO THIS IS A DEBUG LINE ONLY
+            broadcastLocalConnection(new User("225","Ptiteigne"));//TODO THIS IS A DEBUG LINE ONLY
             localUser.addLocalUsernameChangedListener(this);
           //  system.addOnlineUser(myip, localUser);
         } catch (Exception e) {
@@ -115,8 +121,10 @@ treatInformationPacket(str);
         if (!(dropInformationPackets)) {
             system.setCurrentConversations(Integer.parseInt(str[1]));
             for (int i = 2; i < str.length - 1; i+=3){
-                system.addOnlineUser(str[i+1],new User(str[i+1],str[i+2],str[i])); // hasmap  : key = id, user(id,username,ip)
-            }
+                if(!(str[i+1].equals(localUser.getID()))) { //dont add yourself
+                    system.addOnlineUser(str[i + 1], new User(str[i + 1], str[i + 2], str[i])); // hasmap  : key = id, user(id,username,ip)
+                }
+                }
             dropInformationPackets=true;
         }
     }

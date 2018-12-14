@@ -19,8 +19,9 @@ public class GlobalManager implements WindowListener,UserListGUIEventListener, L
 
     public GlobalManager(){
         logWindow = new LoggingWindow("Chat System - Log in");
-     //   this.localUser = new User(""); //TODO retrieve nickname on login
-        this.bs = new BroadcastServer(logWindow);
+        this.logWindow.addLogInListener(this);
+     //   this.localUser = new User("");
+        this.bs = new BroadcastServer();
         this.cs  = new ConversationServer();
     }
 
@@ -29,7 +30,8 @@ public class GlobalManager implements WindowListener,UserListGUIEventListener, L
     }
 
     public void loggedIn(LogInEvent logged){
-        this.userListWindow = new UserListWindow();
+        bs.loggedIn(logged);
+        this.userListWindow = new UserListWindow(bs.getLocalUserame());
         this.userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
     }
     public void sessionRequestFromGUI(String userID){
@@ -42,6 +44,8 @@ public class GlobalManager implements WindowListener,UserListGUIEventListener, L
         logWindow.start();
         bs.start();
         cs.start();
+
+        while(true);
 
     }
 

@@ -16,6 +16,12 @@ public class User implements LocalUsernameChangedGenerator {
         this.username = username;
         this.ip = ip;
     }
+    public User(String id, String username){
+        this.id = id ;
+        this.username = username;
+    }
+
+
     public String getIP(){
         return this.ip;
     }
