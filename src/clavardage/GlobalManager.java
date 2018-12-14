@@ -8,8 +8,9 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.util.HashMap;
 
-public class GlobalManager implements WindowListener,UserListGUIEventListener, LogInListener{
+public class GlobalManager implements WindowListener,UserListGUIEventListener, LogInListener, UserListChangesListener{
     private UserListWindow userListWindow ;
     private LoggingWindow logWindow;
     private BroadcastServer bs;
@@ -21,7 +22,7 @@ public class GlobalManager implements WindowListener,UserListGUIEventListener, L
         logWindow = new LoggingWindow("Chat System - Log in");
         this.logWindow.addLogInListener(this);
      //   this.localUser = new User("");
-        this.bs = new BroadcastServer();
+        this.bs = new BroadcastServer(this);
         this.cs  = new ConversationServer();
     }
 
@@ -70,4 +71,9 @@ public class GlobalManager implements WindowListener,UserListGUIEventListener, L
     public void windowOpened(WindowEvent e){}
     public void windowClosing(WindowEvent e) {}
     public void windowClosed(WindowEvent e){ }
+
+    @Override
+    public void userListHasChanged(HashMap<String, User> onlineUsers) {
+        this.userListWindow.refreshUserListInGUI(onlineUsers);
+    }
 }

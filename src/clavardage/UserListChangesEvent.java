@@ -8,5 +8,4 @@ interface UserListChangesListener {
 
 interface UserListChangesEventGenerator {
     void addUserListChangesListener (UserListChangesListener listener);
-    void reportNewUserListToListeners(HashMap<String,User> onlineUsers);
 }

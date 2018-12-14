@@ -14,7 +14,7 @@ public class SystemState implements UserListChangesEventGenerator{
     private HashMap<String,User> onlineUsers;
 
     // The object listening to the user list changes (notified here by the SystemState)
-    private ArrayList<UserListChangesListener> userListChangesListeners;
+    private ArrayList<UserListChangesListener> userListChangesListeners = new ArrayList<UserListChangesListener>();
 
     public SystemState(){
         this.onlineUsers = new HashMap<String, User>();
@@ -36,7 +36,7 @@ public class SystemState implements UserListChangesEventGenerator{
         this.currentConversations = i;
     }
 
-    
+
     public void addOnlineUser(String id,User us) {
         onlineUsers.put(id, us);
         System.out.println("Added user : " + us.getID() + us.getUsername() + " available on host : " + us.getIP() );
@@ -76,8 +76,7 @@ public class SystemState implements UserListChangesEventGenerator{
 
 
     // Give the new user list to every listeners of the SystemState
-    @Override
-    public void reportNewUserListToListeners(HashMap<String, User> onlineUsers) {
+    private void reportNewUserListToListeners(HashMap<String, User> onlineUsers) {
 
         Iterator<UserListChangesListener> listeners = this.userListChangesListeners.iterator();
 
@@ -85,4 +84,5 @@ public class SystemState implements UserListChangesEventGenerator{
             listeners.next().userListHasChanged(onlineUsers);
         }
     }
+
 }
