@@ -17,9 +17,10 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
   //  private boolean firs
 
     //TODO where is the localUser meant to be between here and GlobalManager
-    public BroadcastServer() {
+    public BroadcastServer(GlobalManager globalManager) {
         system = new SystemState();
-      initSocket();
+        system.addUserListChangesListener(globalManager);
+        initSocket();
         this.in = new byte[256];
         this.out = new byte[256];
         this.dropInformationPackets = false ;

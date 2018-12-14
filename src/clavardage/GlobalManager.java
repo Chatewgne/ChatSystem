@@ -22,7 +22,7 @@ public class GlobalManager implements WindowListener,UserListGUIEventListener, L
         logWindow = new LoggingWindow("Chat System - Log in");
         this.logWindow.addLogInListener(this);
      //   this.localUser = new User("");
-        this.bs = new BroadcastServer();
+        this.bs = new BroadcastServer(this);
         this.cs  = new ConversationServer();
     }
 
