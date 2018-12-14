@@ -34,7 +34,7 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
     private UserListGUIEventListener userListGUIEventListener;
 
 
-    public UserListWindow(){
+    public UserListWindow(String myNickname){
 
         // Defining window properties
         this.setTitle("ChatSystem : Online user list");
@@ -50,7 +50,7 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
         globalContainer.add(userScrollPane, BorderLayout.CENTER);
 
         // Setup then add the personal information panel to the global container
-        setupPersonalPanel();
+        setupPersonalPanel(myNickname);
         globalContainer.add(personalPanel, BorderLayout.SOUTH);
 
 
@@ -63,10 +63,12 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
     /*  Setup the personal panel (the one at the bottom of the user list)
         In particular, add an action listener on the changeNicknameButton
      */
-    private void setupPersonalPanel(){
+    private void setupPersonalPanel(String myNickname){
         personalPanel.setLayout(new BorderLayout());
 
         changeNicknameButton.addActionListener(this);
+
+        this.refreshNicknameLabel(myNickname);
 
         personalPanel.add(nicknameLabel, BorderLayout.WEST);
         personalPanel.add(changeNicknameButton, BorderLayout.EAST);
@@ -77,7 +79,7 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
 
 
     public static void main (String args[]) throws InterruptedException{
-        UserListWindow userListWindow = new UserListWindow();
+        UserListWindow userListWindow = new UserListWindow("test");
 
         /*
         while(true){
