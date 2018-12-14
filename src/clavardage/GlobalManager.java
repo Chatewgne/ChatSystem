@@ -9,31 +9,39 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 
-public class GlobalManager implements WindowListener,UserListGUIEventListener {
+public class GlobalManager implements WindowListener,UserListGUIEventListener, LogInListener{
     private UserListWindow userListWindow ;
     private LoggingWindow logWindow;
     private BroadcastServer bs;
     private ConversationServer cs;
-    private User localUser;
-    private SystemState ss ;
+  //  private User localUser;
+   // private SystemState ss ;
+
     public GlobalManager(){
         logWindow = new LoggingWindow("Chat System - Log in");
-        this.localUser = new User(""); //TODO retrieve nickname on login
+     //   this.localUser = new User(""); //TODO retrieve nickname on login
         this.bs = new BroadcastServer(logWindow);
         this.cs  = new ConversationServer();
     }
 
-    public void newNicknameRequestFromGUI(){}
+    public void newNicknameRequestFromGUI(){
 
+    }
+
+    public void loggedIn(LogInEvent logged){
+        this.userListWindow = new UserListWindow();
+        this.userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
+    }
     public void sessionRequestFromGUI(String userID){
         User u = bs.getUserFromId(Integer.parseInt(userID)) ;
         cs.openNewConversation(u);
     }
 
     public void start(){
-      //  cs.run();
+
         logWindow.start();
-        bs.run();
+        bs.start();
+        cs.start();
 
     }
 

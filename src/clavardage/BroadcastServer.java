@@ -2,10 +2,7 @@ package clavardage;
 
 import javax.swing.event.EventListenerList;
 import java.lang.reflect.Array;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
+import java.net.*;
 import java.util.HashMap;
 
 public class BroadcastServer extends Thread implements LocalUsernameChangedListener, LogInListener {
@@ -18,6 +15,7 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
     private String myip;
     private boolean dropInformationPackets ; //I only need to accept one information packet at log in
 
+
     //TODO where is the localUser meant to be between here and GlobalManager
     public BroadcastServer(LoggingWindow win) {
         system = new SystemState();
@@ -26,6 +24,10 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
         this.in = new byte[256];
         this.out = new byte[256];
         this.dropInformationPackets = false ;
+    }
+
+    public HashMap<String,User> getOnlineUsers(){
+        return system.getOnlineUsers();
     }
 
     private void initSocket()
@@ -159,6 +161,7 @@ treatInformationPacket(str);
     }
     public void run(){
         try {
+            System.out.println("Broadcast Server running...");
             while(true) {
                 String str = receiveMessage();
             }

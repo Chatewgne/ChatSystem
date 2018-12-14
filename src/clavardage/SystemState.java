@@ -17,6 +17,10 @@ public class SystemState {
         currentConversations = 0;
     }
 
+    public HashMap<String, User> getOnlineUsers() {
+        return onlineUsers;
+    }
+
     public User getUser(int i){
         return onlineUsers.get(i);
     }

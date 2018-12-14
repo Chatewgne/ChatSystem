@@ -106,6 +106,7 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 		nickname = nicknameField.getText();
 		System.out.println("NEW NICKNAME : " + nickname);
 		list.loggedIn(new LogInEvent(this, nickname));
+		this.setVisible(false); //TODO is this okay ? Célia
 	}
 	
 	public String getNickname() {

@@ -65,7 +65,10 @@ public class ConversationServer extends Thread {
     public void run(){
         try {
             initServer(4321);
-            waitForConnection();
+            System.out.println("Conversation Server running...");
+            while (true) {
+                waitForConnection();
+            }
         }
         catch (Exception e) {
             System.out.println(e.toString());
