@@ -36,7 +36,7 @@ public class SystemState implements UserListChangesEventGenerator{
         this.currentConversations = i;
     }
 
-    
+
     public void addOnlineUser(String id,User us) {
         onlineUsers.put(id, us);
         System.out.println("Added user : " + us.getID() + us.getUsername() + " available on host : " + us.getIP() );
