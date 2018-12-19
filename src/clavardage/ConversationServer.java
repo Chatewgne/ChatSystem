@@ -53,7 +53,9 @@ public class ConversationServer extends Thread implements RemoteConnexionGenerat
             System.out.println("Waiting for connection on :" + servsock.toString());
             Socket sock = servsock.accept();
             listener.remoteConnexion(new RemoteConnexionEvent(this, sock));
-
+            convos.add(new ConversationManager());
+            System.out.println ("Accepting connection from " + sock.toString());
+            convos.get(convos.size()-1).acceptConvo(sock);
         } catch (Exception e) {
             System.out.println("Conv server error : " + e.toString());
         }

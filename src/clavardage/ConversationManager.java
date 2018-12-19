@@ -78,7 +78,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
         this.start();
     }
 
-    public void initConvo(String ip, int port, Socket sock){
+   /* public void initConvo(String ip, int port, Socket sock){
         try {
             System.out.println("Accepting convo from socket " + ip + " "+ port);
             this.sock = sock ;
@@ -89,7 +89,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
             System.out.println("Failed initiating conversation :" + e.toString());
         }
         this.start();
-    }
+    }*/
 
     public void initConvo(String ip, int port){
         try {
@@ -135,13 +135,15 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
 
     private String receiveMessage(){   //BLOQUANTE
         String c ="" ;
+        try {
         {
-            try {
+
                 c = in.readLine();
-            } catch (Exception e) {
-                System.out.println("Coulnd't read message :" + e.toString());
-            }
+
         }while(c.equals(""));
+        } catch (Exception e) {
+            System.out.println("Coulnd't read message :" + e.toString());
+        }
         return c;
     }
 
