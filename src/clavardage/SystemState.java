@@ -45,7 +45,7 @@ public class SystemState implements UserListChangesEventGenerator{
     }
 
     public void removeOnlineUser(User us){
-        onlineUsers.remove(us);
+        onlineUsers.remove(us.getID());
       //  this.reportNewUserListToListeners(onlineUsers);
     }
     public void incrementConversationCount(){
