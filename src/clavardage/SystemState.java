@@ -43,6 +43,7 @@ public class SystemState implements UserListChangesEventGenerator{
         this.reportNewUserListToListeners(onlineUsers);
 
     }
+
     public void removeOnlineUser(User us){
         onlineUsers.remove(us);
         this.reportNewUserListToListeners(onlineUsers);

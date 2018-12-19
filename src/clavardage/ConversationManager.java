@@ -135,12 +135,12 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
                     }
                 }
             } catch (Exception e) {
-             System.out.println("Coulnd't read message :" + e.toString());
+             System.out.println("Coulnd't read message ____:" + e.toString());
             }
         }
     }
 
-    private String receiveMessage(){   //BLOQUANTE
+    /*private String receiveMessage(){   //BLOQUANTE
         String c ="" ;
         try {
         {
@@ -152,7 +152,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
             System.out.println("Coulnd't read message :" + e.toString());
         }
         return c;
-    }
+    }*/
 
     public void run(){
 

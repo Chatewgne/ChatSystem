@@ -29,6 +29,14 @@ public class GlobalManager implements RemoteConnexionListener, UserListGUIEventL
         cs.addRemoteConnexionListener(this);
     }
 
+    public void remoteDisconnection(){
+        userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
+    }
+
+    public void disconnectionRequestFromGUI(){
+        bs.broadcastDisconnection();
+    }
+
     @Override
     public void remoteConnexion(RemoteConnexionEvent evt) {
         Socket sock = evt.sock;
