@@ -56,6 +56,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
 
     public void refreshRemoteUsername(String remoteUsername) {
         this.window.refreshRemoteUsername(remoteUsername);
+        this.conv.setRemoteID(remoteUsername);
     }
 
 

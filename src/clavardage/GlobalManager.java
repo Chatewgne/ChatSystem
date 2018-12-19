@@ -58,6 +58,7 @@ public class GlobalManager implements RemoteConnexionListener, UserListGUIEventL
         userListWindow.refreshNicknameLabel(e);
     }
     public void changedRemoteUsername(String id, String username){
+        cs.updateRemoteNicknameInConvo(id,username);
         userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
     }
 
