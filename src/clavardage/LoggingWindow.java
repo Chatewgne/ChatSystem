@@ -9,10 +9,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.DefaultCaret;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -22,10 +19,18 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 	// Panel of this window/JFrame
 	private JPanel mainPanel = new JPanel();
 	
-	// Components of the panel
-	private JLabel topLabel = new JLabel("Choose a nickname to identify yourself in the chat system.");
+	// Components of the main panel
 	private JTextField nicknameField = new JTextField();
 	private JButton logButton = new JButton("Log In");
+
+
+	// Top panel (with one or two information labels)
+	private JPanel topPanel = new JPanel(new GridLayout(0,1));
+
+	// The top panel components
+	private JLabel topLabel = new JLabel("Choose a nickname to identify yourself in the chat system.");
+		// Label warning the user that he cannot use the char ':'
+	private JLabel warningLabel = null;
 	
 	// Nickname chosen
 	private String nickname = "";
@@ -63,7 +68,12 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 	    Font labelPolice = new Font("Arial", Font.BOLD, 13);
 	    topLabel.setFont(labelPolice);
 	    topLabel.setHorizontalAlignment(JLabel.CENTER);
-	    mainPanel.add(topLabel, BorderLayout.NORTH);
+
+	    topPanel.add(topLabel);
+
+	    topPanel.setBackground(Color.WHITE);
+
+	    mainPanel.add(topPanel, BorderLayout.NORTH);
 		
 		
 	    // Nickname textfield configuration
@@ -72,20 +82,20 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 	    nicknameField.setPreferredSize(new Dimension(200, 30));
 	    nicknameField.setForeground(Color.RED);
 	    nicknameField.setHorizontalAlignment(JTextField.CENTER);
-	    
+
 	    // Tells the text field that the window is listening its actions
 	    nicknameField.addActionListener(this);
-	    
+
 	    mainPanel.add(nicknameField, BorderLayout.CENTER);
-	    
+
 	    // Log button configuration
 	    logButton.addActionListener(this);
 	    mainPanel.add(logButton, BorderLayout.SOUTH);
-	    
-	    
+
+
 	    // ###### TESTS
-	    
-		
+
+
 	    // We tell our JFrame that the mainPanel is going to be its content pane
 	    this.setContentPane(mainPanel);
 
@@ -107,19 +117,50 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 	
 	private void setNickname() {
 
-		String nickname = nicknameField.getText();
-		System.out.println("NEW NICKNAME : " + nickname);
-		if (firstconnexion) {
-			LogInEvent e = new LogInEvent(this, nickname);
-			for (int i = 0; i < list.size(); i++) {
-				list.get(i).loggedIn(e);
+
+		nickname = nicknameField.getText();
+
+		/*  With our setup, we cannot accept the char ':' in the nickname
+			Hence, we check the input string before transmitting it to the rest of our application.
+		 */
+
+		// If the input string is valid, we transmit it to the rest of the application which will inform the network
+		if(!nickname.contains(":")) {
+
+			// DEBUG
+			//System.out.println("NEW NICKNAME : " + nickname);
+
+			if (firstconnexion) {
+				LogInEvent e = new LogInEvent(this, nickname);
+				for (int i = 0; i < list.size(); i++) {
+					list.get(i).loggedIn(e);
+				}
+			} else {
+				for (int i = 0; i < list.size(); i++) {
+					list.get(i).changedLocalUsername(nickname);
+				}
 			}
-		} else {
-			for (int i = 0; i < list.size(); i++) {
-				list.get(i).changedLocalUsername(nickname);
-			}
+
+			this.setVisible(false);
 		}
-		this.setVisible(false);
+
+		// If the input string contains any ':', we inform the user that we cannot allow it.
+		else {
+
+			if(warningLabel == null){
+
+				warningLabel = new JLabel("The character ':' is not allowed.");
+				warningLabel.setForeground(Color.RED);
+				warningLabel.setHorizontalAlignment(JLabel.CENTER);
+
+				topPanel.add(warningLabel);
+				mainPanel.repaint();
+				mainPanel.revalidate();
+
+			}
+
+		}
+
 	}
 	
 	/*public String getNickname() {
