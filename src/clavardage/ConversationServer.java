@@ -115,13 +115,11 @@ public void acceptConv(String remote, String local, Socket sock) {
             actualConvo = itrConvos.next();
 
             if(id.equals(actualConvo.getRemoteUserID())){
-
-
-
+                actualConvo.refreshRemoteUsername(username);
+                conversationFound = true;
             }
 
         }
-
 
     }
 
