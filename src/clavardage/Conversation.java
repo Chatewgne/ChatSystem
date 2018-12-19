@@ -1,26 +1,24 @@
 package clavardage;
-import java.net.*;
-import java.io.*;
 import java.util.ArrayList;
 
 public class Conversation {
 
-    private String id1 ;
-    private String id2 ;
+    private String remoteID;
+    private String myID;
     private ArrayList<Message> messages;
 
-    public Conversation(String id1,String id2){
-        this.id1 = id1;
-        this.id2 = id2;
+    public Conversation(String remoteID,String myID){
+        this.remoteID = this.remoteID;
+        this.myID = this.myID;
         this.messages = new ArrayList<Message>();
     }
 
-    public void setId1(String id1) {
-        this.id1 = id1;
+    public void setRemoteID(String remoteID) {
+        this.remoteID = remoteID;
     }
 
-    public void setId2(String id2) {
-        this.id2 = id2;
+    public void setMyID(String myID) {
+        this.myID = myID;
     }
 
     public void addMessage(Message message) {
@@ -29,12 +27,12 @@ public class Conversation {
     }
 
 
-    public String getId2() {
-        return id2;
+    public String getMyID() {
+        return myID;
     }
 
-    public String getId1() {
-        return id1;
+    public String getRemoteID() {
+        return remoteID;
     }
 
     public ArrayList<Message> getMessages() {

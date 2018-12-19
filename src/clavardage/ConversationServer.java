@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ConversationServer extends Thread implements RemoteConnexionGenerator {
     private static ArrayList<ConversationManager> convos;
@@ -89,7 +90,33 @@ public void acceptConv(String remote, String local, Socket sock) {
         convos.remove(Num);
     }
 
-   // public static void main(String[] args) {
+
+
+
+    // Updates the conversation with the user who changed his nickname
+    public void updateRemoteNicknameInConvo(String id, String username){
+
+        Iterator<ConversationManager> itrConvos = convos.iterator();
+        ConversationManager actualConvo;
+
+        boolean conversationFound = false;
+
+        while(itrConvos.hasNext() && !conversationFound){
+
+            actualConvo = itrConvos.next();
+
+            if(id.equals(actualConvo.getRemoteUserID())){
+
+            }
+
+        }
+
+
+    }
+
+
+
+    // public static void main(String[] args) {
     public void run(){
         try {
             initServer(4321);

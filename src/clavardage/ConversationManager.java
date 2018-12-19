@@ -49,7 +49,11 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
         }
     }
     public void windowClosed(WindowEvent e){
-}
+    }
+
+
+    public String getRemoteUserID() { return conv.getRemoteID(); }
+
 
     public void NewMessageToSend(NewMessageToSendEvent evt){
         sendMessage(evt.msg);
