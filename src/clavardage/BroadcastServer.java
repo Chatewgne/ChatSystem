@@ -35,6 +35,10 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         return localUser.getUsername();
     }
 
+    public void broadcastDisconnection(){
+        broadcastMessage("QU:"+localUser.getID());
+    }
+
     @Override
     public void addLogInListener(LogInListener listener) {
         this.list = listener;
@@ -78,11 +82,6 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         }
     }
 
-    public void broadcastLocalChanged(User u) {
-        broadcastMessage("CH:" + myip + ":" + u.getID() + ":" + u.getUsername());
-    }
-    //TODO interdire de mettre ":" dans son username
-
     public void localUsernameChanged(String e) {
         localUser.setUsername(e);
         broadcastMessage("CH:" +localUser.getID()+":"+localUser.getUsername());
@@ -119,6 +118,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
                     treatUsernameChangedPacket(str);
                 }
             } else if (str[0].equals("QU")) {//TODO if someone disconnected
+                treatDisconnectionPacket(str);
             } else if (str[0].equals("IN")) {//TODO if someone is responding with some information
                 treatInformationPacket(str);
             } else {
@@ -132,6 +132,10 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         return receive;
     }
 
+    private void treatDisconnectionPacket(String[] str){
+        system.removeOnlineUser(system.getUser(str[1]));
+        list.remoteDisconnection();
+    }
     private void treatUsernameChangedPacket(String[] str){
         if (!(str[1].equals(localUser.getID()))){  //do nothing if it's my own packet
             system.changeRemoteUserNickname(str[1],str[2]);

@@ -33,6 +33,7 @@ interface LogInListener extends EventListener {
     void loggedIn(LogInEvent evt);
     void changedLocalUsername(String e);
     void changedRemoteUsername(String id, String username);
+    void remoteDisconnection();
 }
 
 interface LogInEventGenerator {

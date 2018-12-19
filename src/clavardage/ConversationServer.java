@@ -1,15 +1,18 @@
 package clavardage;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class ConversationServer extends Thread implements RemoteConnexionGenerator {
+public class ConversationServer extends Thread implements RemoteConnexionGenerator, WindowListener, UserListGUIEventGenerator {
     private static ArrayList<ConversationManager> convos;
     private static ServerSocket servsock ;
     private RemoteConnexionListener listener ;
+    private UserListGUIEventListener list;
 
    /* private static int findFreePort(){
         int res = -1 ;
@@ -25,6 +28,14 @@ public class ConversationServer extends Thread implements RemoteConnexionGenerat
         }
         return res;
     }*/
+
+   public void addUserListGUIEventListener(UserListGUIEventListener list){
+       this.list = list ;
+   }
+
+   public void windowClosing(WindowEvent e) {
+    list.disconnectionRequestFromGUI();
+   }
 
     public static void initServer(int port){
         try {
@@ -129,7 +140,14 @@ public void acceptConv(String remote, String local, Socket sock) {
             System.out.println(e.toString());
         }
 
-
-
     }
+
+    public void windowDeactivated(WindowEvent e){}
+
+    public void windowActivated(WindowEvent e){}
+    public void windowDeiconified(WindowEvent e){
+    }
+    public void windowIconified(WindowEvent e){    }
+    public void windowOpened(WindowEvent e){}
+    public void windowClosed(WindowEvent e){}
 }
