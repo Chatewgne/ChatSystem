@@ -134,6 +134,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
 
     private void treatDisconnectionPacket(String[] str){
         system.removeOnlineUser(system.getUser(str[1]));
+        System.out.println("Treating disconnection packet");
         list.remoteDisconnection();
     }
     private void treatUsernameChangedPacket(String[] str){

@@ -42,6 +42,7 @@ public class GlobalManager implements RemoteConnexionListener, UserListGUIEventL
     }
 
     public void remoteDisconnection(){
+        System.out.println("GlobalManager detected disconnection");
         userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
     }
 

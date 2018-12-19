@@ -108,7 +108,7 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
         usersPane.removeAll();
 
         UserPanel newUserPanel;
-
+        System.out.println("Refreshing display");
         Iterator entries = onlineUsers.entrySet().iterator();
         while (entries.hasNext()){
             Map.Entry entry = (Map.Entry)entries.next();
