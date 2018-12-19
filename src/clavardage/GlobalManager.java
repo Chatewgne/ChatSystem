@@ -21,15 +21,16 @@ public class GlobalManager implements RemoteConnexionListener, UserListGUIEventL
     public GlobalManager(){
         logWindow = new LoggingWindow("Chat System - Log in");
         this.logWindow.addLogInListener(this);
+
      //   this.localUser = new User("");
         this.bs = new BroadcastServer(this);
         bs.addLogInListener(this);
         this.cs  = new ConversationServer();
+        cs.addRemoteConnexionListener(this);
     }
 
     @Override
     public void remoteConnexion(RemoteConnexionEvent evt) {
-        cs.addRemoteConnexionListener(this);
         Socket sock = evt.sock;
         String remote = bs.getUserFromIP(sock.getInetAddress().toString()).getUsername();
         cs.acceptConv(remote,bs.getLocalUserame(),sock);

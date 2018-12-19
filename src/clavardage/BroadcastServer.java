@@ -52,8 +52,8 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         try {
             localUser = new User(logged.name);
             broadcastLocalConnection(localUser);
-          //  broadcastLocalConnection(new User("22","Nawal Guermouche"));//TODO THIS IS A DEBUG LINE ONLY
-           // broadcastLocalConnection(new User("445","Pipoudou"));//TODO THIS IS A DEBUG LINE ONLY
+         //   broadcastLocalConnection(new User("22","Nawal Guermouche"));//TODO THIS IS A DEBUG LINE ONLY
+         //  broadcastLocalConnection(new User("445","Pipoudou"));//TODO THIS IS A DEBUG LINE ONLY
            // broadcastLocalConnection(new User("225","Ptiteigne"));//TODO THIS IS A DEBUG LINE ONLY
            // localUser.addLocalUsernameChangedListener(this);
           //  system.addOnlineUser(myip, localUser);

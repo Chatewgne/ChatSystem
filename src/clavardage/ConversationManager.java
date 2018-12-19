@@ -94,7 +94,8 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
     public void initConvo(String ip, int port){
         try {
             System.out.println("Initiating convo from socket " + ip + " "+ port);
-            this.sock = new Socket(ip, port);
+            String newip= ip.split("/")[1];
+            this.sock = new Socket(newip, port);
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
             //TODO retrieve correct userid
@@ -118,18 +119,24 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
         Boolean keepgoing = true ;
 
         while (keepgoing){
-        String textmess = receiveMessage();
-        if (!(textmess.equals("--end--string--"))){
-                Message mess = new Message(textmess);
-                conv.addMessage(mess);
-                // DateFormat dateFormat  = new SimpleDateFormat("DD/MM HH:MM:SS") ;
-                // String date = dateFormat.format(mess.getDate());
-                window.displayReceivedMessage(mess.getContent());
-            } else {
-           // if(textmess.equals("--end--string--")){
-            keepgoing = false;
-            closeConversation();
+            try {
+        String textmess = in.readLine();
+        if (!(textmess==null)) {
+                    if (!(textmess.equals("--end--string--"))) {
+                        Message mess = new Message(textmess);
+                        conv.addMessage(mess);
+                        // DateFormat dateFormat  = new SimpleDateFormat("DD/MM HH:MM:SS") ;
+                        // String date = dateFormat.format(mess.getDate());
+                        window.displayReceivedMessage(mess.getContent());
+                    } else {
+                        // if(textmess.equals("--end--string--")){
+                        keepgoing = false;
+                        closeConversation();
                     }
+                }
+            } catch (Exception e) {
+             System.out.println("Coulnd't read message :" + e.toString());
+            }
         }
     }
 
