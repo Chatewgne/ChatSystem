@@ -85,7 +85,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
 
     public void localUsernameChanged(String e) {
         localUser.setUsername(e);
-        broadcastMessage("CH:" + ":" +localUser.getIP()+":"+localUser.getID()+":"+localUser.getUsername());
+        broadcastMessage("CH:" +localUser.getID()+":"+localUser.getUsername());
         System.out.println("Broadcast server detected local username changed to : " + e);
     }
 
@@ -134,9 +134,9 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
 
     private void treatUsernameChangedPacket(String[] str){
         if (!(str[1].equals(localUser.getID()))){  //do nothing if it's my own packet
-            system.changeRemoteUserNickname(str[2],str[3]);
-            System.out.println("Detected username change on user " + str[2] +" now called "+ str[3]);
-            list.changedRemoteUsername(str[2], str[3]);
+            system.changeRemoteUserNickname(str[1],str[2]);
+            System.out.println("Detected username change on user " + str[1] +" now called "+ str[2]);
+            list.changedRemoteUsername(str[1], str[2]);
         }
     }
 
