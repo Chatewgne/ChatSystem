@@ -109,6 +109,11 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 		chatBox.append( "--- " + mess + " ---\n");
 	}
 
+
+	public void refreshRemoteUsername(String remoteUsername){
+		this.setTitle("-- You are speaking to "+ remoteUsername +"--");
+	}
+
 	private void sendMessageInField() {
 		
 		String msg = jtf.getText();
