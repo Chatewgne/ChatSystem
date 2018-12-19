@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class ConversationServer extends Thread implements RemoteConnexionGenerator, WindowListener, UserListGUIEventGenerator {
+public class ConversationServer extends Thread implements RemoteConnexionGenerator, UserListGUIEventGenerator {
     private static ArrayList<ConversationManager> convos;
     private static ServerSocket servsock ;
     private RemoteConnexionListener listener ;
@@ -33,9 +33,6 @@ public class ConversationServer extends Thread implements RemoteConnexionGenerat
        this.list = list ;
    }
 
-   public void windowClosing(WindowEvent e) {
-    list.disconnectionRequestFromGUI();
-   }
 
     public static void initServer(int port){
         try {
@@ -145,12 +142,5 @@ public void acceptConv(String remote, String local, Socket sock) {
 
     }
 
-    public void windowDeactivated(WindowEvent e){}
 
-    public void windowActivated(WindowEvent e){}
-    public void windowDeiconified(WindowEvent e){
-    }
-    public void windowIconified(WindowEvent e){    }
-    public void windowOpened(WindowEvent e){}
-    public void windowClosed(WindowEvent e){}
 }

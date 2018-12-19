@@ -10,13 +10,25 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.HashMap;
 
-public class GlobalManager implements RemoteConnexionListener, UserListGUIEventListener, LogInListener, UserListChangesListener{
+public class GlobalManager implements RemoteConnexionListener, UserListGUIEventListener, WindowListener, LogInListener, UserListChangesListener{
     private UserListWindow userListWindow ;
     private LoggingWindow logWindow;
     private BroadcastServer bs;
     private ConversationServer cs;
   //  private User localUser;
    // private SystemState ss ;
+
+    public void windowDeactivated(WindowEvent e){}
+
+    public void windowActivated(WindowEvent e){}
+    public void windowDeiconified(WindowEvent e){
+    }
+    public void windowIconified(WindowEvent e){    }
+    public void windowOpened(WindowEvent e){}
+    public void windowClosed(WindowEvent e){}
+    public void windowClosing(WindowEvent e) {
+        bs.broadcastDisconnection();
+    }
 
     public GlobalManager(){
         logWindow = new LoggingWindow("Chat System - Log in");
@@ -33,9 +45,6 @@ public class GlobalManager implements RemoteConnexionListener, UserListGUIEventL
         userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
     }
 
-    public void disconnectionRequestFromGUI(){
-        bs.broadcastDisconnection();
-    }
 
     @Override
     public void remoteConnexion(RemoteConnexionEvent evt) {
@@ -60,6 +69,7 @@ public class GlobalManager implements RemoteConnexionListener, UserListGUIEventL
         this.userListWindow = new UserListWindow(bs.getLocalUserame());
         this.userListWindow.addUserListGUIEventListener(this);
         this.userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
+        this.userListWindow.addWindowListener(this);
     }
     public void sessionRequestFromGUI(String userID){
         User u = bs.getUserFromId(userID) ;
