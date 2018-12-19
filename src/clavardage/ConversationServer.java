@@ -112,11 +112,14 @@ public void acceptConv(String remote, String local, Socket sock) {
 
         boolean conversationFound = false;
 
+        // Iteration on the conversation manager list until we find a corresponding conversation
         while(itrConvos.hasNext() && !conversationFound){
 
             actualConvo = itrConvos.next();
 
             if(id.equals(actualConvo.getRemoteUserID())){
+
+
 
             }
 
