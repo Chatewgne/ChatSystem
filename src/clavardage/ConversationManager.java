@@ -26,6 +26,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
     }
     public ConversationManager(String remote, String local){
       //  this.window.addWindowListener(this);
+        this.conv = new Conversation(remote,local);
         this.window = new ChatWindow("-- You are speaking to "+remote +"--",remote,local);
     }
     public ConversationManager(Socket sock){
@@ -71,13 +72,25 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
             this.sock=socket;
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-            //TODO retrieve correct userid
-            this.conv = new Conversation("First","Second");
         } catch (Exception e) {
             System.out.println("Failed accepting convo:" + e.toString());
         }
         this.start();
     }
+
+    public void initConvo(String ip, int port, Socket sock){
+        try {
+            System.out.println("Accepting convo from socket " + ip + " "+ port);
+            this.sock = sock ;
+            this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            this.out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+            //TODO retrieve correct userid
+        } catch (Exception e) {
+            System.out.println("Failed initiating conversation :" + e.toString());
+        }
+        this.start();
+    }
+
     public void initConvo(String ip, int port){
         try {
             System.out.println("Initiating convo from socket " + ip + " "+ port);
@@ -85,7 +98,6 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
             //TODO retrieve correct userid
-            this.conv = new Conversation("first","Second");
                     } catch (Exception e) {
             System.out.println("Failed initiating conversation :" + e.toString());
         }
@@ -98,10 +110,9 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
             out.flush();
         }
         catch (Exception e) {
-            System.out.println("Coulnd't send message :" + e.toString());
+            System.out.println("Couldn't send message :" + e.toString());
         }
     }
-
 
     private void receiveAndStoreMessage(){   //BLOQUANTE
         Boolean keepgoing = true ;

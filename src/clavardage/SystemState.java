@@ -9,7 +9,7 @@ import java.util.Map;
 public class SystemState implements UserListChangesEventGenerator{
 
     private int currentConversations;
-
+//TODO verifier que y a pas trop de conversations avant d'en lancer une
     //private ArrayList<User> onlineUsers;
     private HashMap<String,User> onlineUsers;
 
@@ -68,6 +68,16 @@ public class SystemState implements UserListChangesEventGenerator{
 
         return str;
     }
+    public User getUserFromIP(String IP){
+        Iterator entries = onlineUsers.entrySet().iterator();
+        User user = new User();
+        while (entries.hasNext()){
+            Map.Entry entry = (Map.Entry)entries.next();
+            user = (User) entry.getValue();
+            if (user.getIP().equals(IP)) break;
+        }
+        return user;
+    }
 
     @Override
     public void addUserListChangesListener(UserListChangesListener listener) {
@@ -82,6 +92,20 @@ public class SystemState implements UserListChangesEventGenerator{
 
         while(listeners.hasNext()){
             listeners.next().userListHasChanged(onlineUsers);
+        }
+    }
+
+    public void changeRemoteUserNickname(String id,String name){
+        Iterator entries = onlineUsers.entrySet().iterator();
+        User user = new User();
+        while (entries.hasNext()){
+            Map.Entry entry = (Map.Entry)entries.next();
+            if(entry.getKey().equals(id)) {
+               user = (User) entry.getValue();
+               user.setUsername(name);
+               entry.setValue(user);
+               break;
+            }
         }
     }
 

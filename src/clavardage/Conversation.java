@@ -3,7 +3,7 @@ import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Conversation extends Thread {
+public class Conversation {
 
     private String id1 ;
     private String id2 ;

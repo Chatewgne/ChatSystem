@@ -5,7 +5,7 @@ import java.lang.reflect.Array;
 import java.net.*;
 import java.util.HashMap;
 
-public class BroadcastServer extends Thread implements LocalUsernameChangedListener{
+public class BroadcastServer extends Thread implements LogInEventGenerator {
 
     private SystemState system;
     private User localUser;
@@ -13,6 +13,7 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
     private byte[] out;
     private byte[] in;
     private String myip;
+    private LogInListener list ;
     private boolean dropInformationPackets ; //I only need to accept one information packet at log in
   //  private boolean firs
 
@@ -34,6 +35,11 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
         return localUser.getUsername();
     }
 
+    @Override
+    public void addLogInListener(LogInListener listener) {
+        this.list = listener;
+    }
+
     private void initSocket()
     {
         try {
@@ -49,11 +55,15 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
           //  broadcastLocalConnection(new User("22","Nawal Guermouche"));//TODO THIS IS A DEBUG LINE ONLY
            // broadcastLocalConnection(new User("445","Pipoudou"));//TODO THIS IS A DEBUG LINE ONLY
            // broadcastLocalConnection(new User("225","Ptiteigne"));//TODO THIS IS A DEBUG LINE ONLY
-            localUser.addLocalUsernameChangedListener(this);
+           // localUser.addLocalUsernameChangedListener(this);
           //  system.addOnlineUser(myip, localUser);
         } catch (Exception e) {
             System.out.println("Error on broadcast : "+e.toString());
         }
+    }
+
+    public User getUserFromIP(String ip){
+        return system.getUserFromIP(ip);
     }
 
     private void broadcastLocalConnection (User u) { //broadcasts my arrival and returns my ip
@@ -73,9 +83,10 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
     }
     //TODO interdire de mettre ":" dans son username
 
-    public void localUsernameChanged(LocalUsernameChangedEvent e) {
-        User whochanged = (User) e.getSource();
-        System.out.println("Broadcast server detected local username changed to : " + whochanged.getUsername());
+    public void localUsernameChanged(String e) {
+        localUser.setUsername(e);
+        broadcastMessage("CH:" + ":" +localUser.getIP()+":"+localUser.getID()+":"+localUser.getUsername());
+        System.out.println("Broadcast server detected local username changed to : " + e);
     }
 
     public User getUserFromId(String userid) {
@@ -104,6 +115,9 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
                     system.addOnlineUser(str[1], new User(str[1], str[2], source.toString()));
                 }
             } else if (str[0].equals("CH")) { //TODO if someone changed name
+                if (!(str[1].equals(localUser.getID()))){  //do nothing if it's my own packet
+                    treatUsernameChangedPacket(str);
+                }
             } else if (str[0].equals("QU")) {//TODO if someone disconnected
             } else if (str[0].equals("IN")) {//TODO if someone is responding with some information
                 treatInformationPacket(str);
@@ -116,6 +130,14 @@ public class BroadcastServer extends Thread implements LocalUsernameChangedListe
             System.out.println("Couldn't receive datagram packet : " + e.toString());
         }
         return receive;
+    }
+
+    private void treatUsernameChangedPacket(String[] str){
+        if (!(str[1].equals(localUser.getID()))){  //do nothing if it's my own packet
+            system.changeRemoteUserNickname(str[2],str[3]);
+            System.out.println("Detected username change on user " + str[2] +" now called "+ str[3]);
+            list.changedRemoteUsername(str[2], str[3]);
+        }
     }
 
     private void treatInformationPacket(String[] str){

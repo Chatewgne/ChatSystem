@@ -18,10 +18,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class LoggingWindow extends JFrame implements ActionListener, NewMessageToSendEventGenerator, LogInEventGenerator{
-	
+	//TODO why is newmessagetosendeventgenerator
 	// Panel of this window/JFrame
 	private JPanel mainPanel = new JPanel();
-	private User localUser ;
 	
 	// Components of the panel
 	private JLabel topLabel = new JLabel("Choose a nickname to identify yourself in the chat system.");
@@ -34,6 +33,9 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 	// Extern listener
 	private NewMessageToSendListener listener;
 	private ArrayList<LogInListener> list;
+
+	//to differentiate between a SET username and a CHANGE username
+	private boolean firstconnexion;
 	/** Class constructor, instanciate the logging window.
 	 * 
 	 * @param windowName name of the window
@@ -47,7 +49,7 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.list = new ArrayList<LogInListener>();
-		
+		this.firstconnexion=true;
 		
 		// Panel layout configuration
 		BorderLayout borderLayout = new BorderLayout();
@@ -94,32 +96,39 @@ public class LoggingWindow extends JFrame implements ActionListener, NewMessageT
 	
 	
 	//public static void main (String args[]) {
-	public void start(){
+	public void start(Boolean firstconnexion){
 //		Set the JFrame visible
+		this.firstconnexion = firstconnexion;
 		this.setVisible(true);
 
 		//LoggingWindow f = new LoggingWindow("ChatSystem - Logging");
 		
 	}
 	
-	
 	private void setNickname() {
-		
-		nickname = nicknameField.getText();
+
+		String nickname = nicknameField.getText();
 		System.out.println("NEW NICKNAME : " + nickname);
-		LogInEvent e = new LogInEvent(this, nickname);
-		for (int i = 0 ; i < list.size(); i++) {
-			list.get(i).loggedIn(e);
+		if (firstconnexion) {
+			LogInEvent e = new LogInEvent(this, nickname);
+			for (int i = 0; i < list.size(); i++) {
+				list.get(i).loggedIn(e);
+			}
+		} else {
+			for (int i = 0; i < list.size(); i++) {
+				list.get(i).changedLocalUsername(nickname);
+			}
 		}
 		this.setVisible(false);
 	}
 	
-	public String getNickname() {
-		if(nickname == "")
+	/*public String getNickname() {
+		/*if(nickname == "")
 			return null;
 		else
 			return nickname;
-	}
+		return localUser.getUsername();
+	}*/
 	
 	// Updates the chat box according to the GUI events done by the user
 	public void actionPerformed(ActionEvent arg0) {

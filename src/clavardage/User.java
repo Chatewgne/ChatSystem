@@ -11,6 +11,8 @@ public class User implements LocalUsernameChangedGenerator {
     private String ip;
     private ArrayList<Conversation> convos ;
 
+    private LocalUsernameChangedListener localUsernameChangedListener ;
+
     public User(String id, String username, String ip){
         this.id = id ;
         this.username = username;
@@ -19,6 +21,8 @@ public class User implements LocalUsernameChangedGenerator {
     public User(String id, String username){
         this.id = id ;
         this.username = username;
+    }
+    public User(){
     }
 
 
@@ -49,16 +53,19 @@ public class User implements LocalUsernameChangedGenerator {
         this.id = ID;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(String username){
         this.username = username;
-        this.FireLocalUsernameChangedEvent(new LocalUsernameChangedEvent(this));
+    }
+
+    public void setUsernameAndFireEvent(String username) {
+        this.username = username;
+      //  this.FireLocalUsernameChangedEvent(new LocalUsernameChangedEvent(this)); //TODO delete the localuseramechanged class
     }
 
     public void setConvos(ArrayList<Conversation> convos) {
         this.convos = convos;
     }
 
-    private LocalUsernameChangedListener localUsernameChangedListener ;
     private void FireLocalUsernameChangedEvent(LocalUsernameChangedEvent e){
             localUsernameChangedListener.localUsernameChanged(e);
     }

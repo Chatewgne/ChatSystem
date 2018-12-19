@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.HashMap;
 
-public class GlobalManager implements WindowListener,UserListGUIEventListener, LogInListener, UserListChangesListener{
+public class GlobalManager implements RemoteConnexionListener, UserListGUIEventListener, LogInListener, UserListChangesListener{
     private UserListWindow userListWindow ;
     private LoggingWindow logWindow;
     private BroadcastServer bs;
@@ -23,12 +23,29 @@ public class GlobalManager implements WindowListener,UserListGUIEventListener, L
         this.logWindow.addLogInListener(this);
      //   this.localUser = new User("");
         this.bs = new BroadcastServer(this);
+        bs.addLogInListener(this);
         this.cs  = new ConversationServer();
     }
 
-    public void newNicknameRequestFromGUI(){
+    @Override
+    public void remoteConnexion(RemoteConnexionEvent evt) {
+        cs.addRemoteConnexionListener(this);
+        Socket sock = evt.sock;
+        String remote = bs.getUserFromIP(sock.getInetAddress().toString()).getUsername();
+        cs.acceptConv(remote,bs.getLocalUserame(),sock);
+    }
+    public void changedLocalUsername(String e){
+        bs.localUsernameChanged(e);
+        userListWindow.refreshNicknameLabel(e);
+    }
+    public void changedRemoteUsername(String id, String username){
+        userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
     }
 
+    public void newNicknameRequestFromGUI() {
+        logWindow.start(false);
+
+    }
     public void loggedIn(LogInEvent logged){
         bs.loggedIn(logged);
         this.userListWindow = new UserListWindow(bs.getLocalUserame());
@@ -37,12 +54,12 @@ public class GlobalManager implements WindowListener,UserListGUIEventListener, L
     }
     public void sessionRequestFromGUI(String userID){
         User u = bs.getUserFromId(userID) ;
-        cs.openNewConversation(u, bs.getLocalUserame());
+        cs.requestNewConversation(u, bs.getLocalUserame());
     }
 
     public void start(){
 
-        logWindow.start();
+        logWindow.start(true);
         bs.start();
         cs.start();
 
@@ -63,14 +80,6 @@ public class GlobalManager implements WindowListener,UserListGUIEventListener, L
         }
         return myip;
     }*/
-
-    public void windowDeactivated(WindowEvent e){}
-    public void windowActivated(WindowEvent e){}
-    public void windowDeiconified(WindowEvent e){ }
-    public void windowIconified(WindowEvent e){    }
-    public void windowOpened(WindowEvent e){}
-    public void windowClosing(WindowEvent e) {}
-    public void windowClosed(WindowEvent e){ }
 
     @Override
     public void userListHasChanged(HashMap<String, User> onlineUsers) {
