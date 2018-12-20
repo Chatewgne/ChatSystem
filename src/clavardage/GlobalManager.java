@@ -10,6 +10,7 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
     private LoggingWindow logWindow;
     private BroadcastServer bs;
     private ConversationServer cs;
+    private int maxConvAllowed = 1000;
   //  private User localUser;
    // private SystemState ss ;
 
@@ -74,7 +75,7 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
         this.userListWindow.addWindowListener(this);
     }
     public void sessionRequestFromGUI(String userID){
-        if (bs.getConversationCount() < 1000) {
+        if (bs.getConversationCount() < maxConvAllowed) {
             User u = bs.getUserFromId(userID);
             cs.requestNewConversation(u, bs.getLocalUser());
             bs.broadcastNewConversation();
