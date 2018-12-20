@@ -13,7 +13,7 @@ import java.io.OutputStreamWriter;
 import java.net.*;
 
 
-public class ConversationManager extends Thread implements NewMessageToSendListener, WindowListener {
+public class ConversationManager extends Thread implements LogInEventGenerator, NewMessageToSendListener, WindowListener {
 
     private Socket sock;
     private BufferedReader in;
@@ -21,17 +21,24 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
     private Conversation conv;
     private ChatWindow window;
 
+    private LogInListener list ;
+
     public ConversationManager(){
         //  this.window.addWindowListener(this);
     }
-    public ConversationManager(User remote, User local){
+    public ConversationManager(User remote, User local, LogInListener list){
       //  this.window.addWindowListener(this);
         this.conv = new Conversation(remote,local);
         this.window = new ChatWindow("-- You are speaking to "+remote.getUsername() +"--",remote.getUsername(),local.getUsername());
+        addLogInListener(list);
     }
     public ConversationManager(Socket sock){
         this.sock = sock ;
         //this.window.addWindowListener(this);
+    }
+
+    public void addLogInListener(LogInListener list){
+        this.list = list;
     }
     public void windowDeactivated(WindowEvent e){}
 
@@ -75,6 +82,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
             in.close();
             out.close();
             this.sock.close();
+            list.conversationClosed();
             this.window.displayInfo("Remote User a quitté la conv");
         }
         catch (Exception e) {

@@ -10,11 +10,17 @@ public class ConversationServer extends Thread implements RemoteConnectionEventG
     private static ServerSocket servsock ;
     private RemoteConnectionListener listener ;
     private UserListGUIEventListener list;
+    private LogInListener listener2;
 
        public void addUserListGUIEventListener(UserListGUIEventListener list){
        this.list = list ;
    }
 
+
+   public ConversationServer(LogInListener list)
+   {
+       this.listener2 = list;
+   }
 
     private static void initServer(int port){
         try {
@@ -51,7 +57,7 @@ public class ConversationServer extends Thread implements RemoteConnectionEventG
 
 public void acceptConv(User remote, User local, Socket sock) {
         try{
-            convos.add(new ConversationManager(remote,local));
+            convos.add(new ConversationManager(remote,local,listener2));
             System.out.println ("Accepting connection from " + sock.toString());
             convos.get(convos.size()-1).acceptConvo(sock);
         }
@@ -62,8 +68,8 @@ public void acceptConv(User remote, User local, Socket sock) {
     }
 
 
-    public static void requestNewConversation(User remoteuser, User local){
-        ConversationManager convman = new ConversationManager(remoteuser,local);
+    public void requestNewConversation(User remoteuser, User local){
+        ConversationManager convman = new ConversationManager(remoteuser,local,listener2);
         convman.initConvo(remoteuser.getIP(),servsock.getLocalPort());
         convos.add(convman);
        // convos.get(convos.size()-1).initConvo(user.getIP(),servsock.getLocalPort());
@@ -113,6 +119,7 @@ public void acceptConv(User remote, User local, Socket sock) {
 
             actualConvo = itrConvos.next();
             actualConvo.getConv().setLocalUsername(username);
+
 
         }
 
