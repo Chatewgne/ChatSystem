@@ -21,6 +21,8 @@ public class Conversation {
         this.remoteID = remoteID;
     }
 
+    public void setCurrentRemoteNickname(String remoteUsername){ this.currentRemoteNickname = remoteUsername; }
+
 
     public void addMessage(String mess, Boolean sent) {
         if (sent){
