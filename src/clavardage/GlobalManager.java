@@ -2,12 +2,7 @@ package clavardage;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.URL;
 import java.util.HashMap;
 
 public class GlobalManager implements RemoteConnexionListener, UserListGUIEventListener, WindowListener, LogInListener, UserListChangesListener{
@@ -51,7 +46,7 @@ public class GlobalManager implements RemoteConnexionListener, UserListGUIEventL
     public void remoteConnexion(RemoteConnexionEvent evt) {
         Socket sock = evt.sock;
         String remote = bs.getUserFromIP(sock.getInetAddress().toString()).getUsername();
-        cs.acceptConv(remote,bs.getLocalUserame(),sock);
+        cs.acceptConv(remote,bs.getLocalUsername(),sock);
     }
     public void changedLocalUsername(String e){
         bs.localUsernameChanged(e);
@@ -68,14 +63,14 @@ public class GlobalManager implements RemoteConnexionListener, UserListGUIEventL
     }
     public void loggedIn(LogInEvent logged){
         bs.loggedIn(logged);
-        this.userListWindow = new UserListWindow(bs.getLocalUserame());
+        this.userListWindow = new UserListWindow(bs.getLocalUsername());
         this.userListWindow.addUserListGUIEventListener(this);
         this.userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
         this.userListWindow.addWindowListener(this);
     }
     public void sessionRequestFromGUI(String userID){
         User u = bs.getUserFromId(userID) ;
-        cs.requestNewConversation(u, bs.getLocalUserame());
+        cs.requestNewConversation(u, bs.getLocalUsername());
     }
 
     public void start(){

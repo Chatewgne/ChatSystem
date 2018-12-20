@@ -110,8 +110,11 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 	}
 
 
-	public void refreshRemoteUsername(String remoteUsername){
+	public void refreshRemoteUsernameinGUI(String remoteUsername){
 		this.setTitle("-- You are speaking to "+ remoteUsername +"--");
+
+		// DEBUG
+		System.out.println("// CHAT WINDOW //  The remote user has changed its username for " + remoteUsername);
 	}
 
 	private void sendMessageInField() {

@@ -31,7 +31,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         return system.getOnlineUsers();
     }
 
-    public String getLocalUserame(){
+    public String getLocalUsername(){
         return localUser.getUsername();
     }
 
