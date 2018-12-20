@@ -67,8 +67,13 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     public String getRemoteUserID() { return conv.getRemoteID(); }
 
     public void refreshRemoteUsername(String remoteUsername) {
-        this.window.refreshRemoteUsernameinGUI(remoteUsername);
+        this.window.refreshRemoteUsernameinChatWindow(remoteUsername);
         this.conv.setCurrentRemoteNickname(remoteUsername);
+    }
+
+    public void setLocalUsername(String localUsername){
+        this.conv.setLocalUsername(localUsername);
+        this.window.refreshLocalUsernameInChatWindow(localUsername);
     }
 
 

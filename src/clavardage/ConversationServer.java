@@ -118,7 +118,7 @@ public void acceptConv(User remote, User local, Socket sock) {
         while(itrConvos.hasNext()){
 
             actualConvo = itrConvos.next();
-            actualConvo.getConv().setLocalUsername(username);
+            actualConvo.setLocalUsername(username);
 
 
         }
