@@ -59,7 +59,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
 
     public void refreshRemoteUsername(String remoteUsername) {
         this.window.refreshRemoteUsernameinGUI(remoteUsername);
-        this.conv.setRemoteID(remoteUsername);
+        this.conv.setCurrentRemoteNickname(remoteUsername);
     }
 
 

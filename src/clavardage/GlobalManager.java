@@ -50,10 +50,14 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
         bs.broadcastNewConversation();
         cs.acceptConv(remote,bs.getLocalUser(),sock);
     }
+
+    @Override
     public void changedLocalUsername(String e){
         bs.broadcastUsernameChanged(e);
         userListWindow.refreshNicknameLabel(e);
     }
+
+    @Override
     public void changedRemoteUsername(String id, String username){
         cs.updateRemoteNicknameInConvo(id,username);
         userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
