@@ -44,7 +44,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
         sendMessage("--end--string--");
         try {
             in.close();
-            out.flush();
+            out.close();
             sock.close();
         } catch (Exception i) {
             System.out.println("ConvMan failed closin socket :  " + i.toString());
