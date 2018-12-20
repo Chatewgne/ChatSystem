@@ -35,8 +35,10 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         return localUser.getUsername();
     }
 
+    public User getLocalUser(){return localUser;}
+
     public void broadcastDisconnection(){
-        broadcastMessage("QU:"+localUser.getID());
+        broadcastPacket("QU:"+localUser.getID());
     }
 
     @Override
@@ -82,9 +84,9 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         }
     }
 
-    public void localUsernameChanged(String e) {
+    public void broadcastUsernameChanged(String e) {
         localUser.setUsername(e);
-        broadcastMessage("CH:" +localUser.getID()+":"+localUser.getUsername());
+        broadcastPacket("CH:" +localUser.getID()+":"+localUser.getUsername());
         System.out.println("Broadcast server detected local username changed to : " + e);
     }
 
@@ -92,7 +94,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         return system.getUser(userid);
     }
 
-    private String receiveMessage() {             //BLOQUANTE
+    private void receivePacket() {             //BLOQUANTE
         DatagramPacket packet = new DatagramPacket(in, in.length);
         InetAddress source ;
         String receive = "";
@@ -108,10 +110,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
                     myip = source.toString();
                     System.out.println("My ip is : " + myip);
                 }else {//if this connection packet is from someone else, store them and send them information about the system (list of users and their addresses : remote users + myself
-                    String answer = "IN:" + system.toString() + ":" + myself() ;
-                    sendMessage(answer, source);
-                    System.out.println("Sent UDP datagram " + answer + "to host " + source);
-                    system.addOnlineUser(str[1], new User(str[1], str[2], source.toString()));
+                  treatConnectionPacket(str,source);
                 }
             } else if (str[0].equals("CH")) { //TODO if someone changed name
                 if (!(str[1].equals(localUser.getID()))){  //do nothing if it's my own packet
@@ -129,7 +128,13 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         } catch (Exception e) {
             System.out.println("Couldn't receive datagram packet : " + e.toString());
         }
-        return receive;
+    }
+
+    private void treatConnectionPacket(String[] packet, InetAddress source){
+        String answer = "IN:" + system.toString() + ":" + myself() ;
+        sendPacket(answer, source);
+        System.out.println("Sent UDP datagram " + answer + "to host " + source);
+        system.addOnlineUser(packet[1], new User(packet[1], packet[2], source.toString()));
     }
 
     private void treatDisconnectionPacket(String[] str){
@@ -162,7 +167,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
     private String myself(){
         return myip + ":" + localUser.getID() + ":" + localUser.getUsername();
     }
-    private String getMyip(){
+   /* private String getMyip(){
         String str = "empty_ip";
         InetAddress adr ;
         out = str.getBytes();
@@ -174,10 +179,10 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         System.out.println("Couldn't get my ip adress : "+e.toString());
     }
        return str;
-    }
+    }*/
 
 
-    private void sendMessage(String mess, InetAddress adr){
+    private void sendPacket(String mess, InetAddress adr){
         out = mess.getBytes();
         try{
             DatagramPacket packet = new DatagramPacket(out,out.length, adr,4321);
@@ -188,7 +193,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         }
 }
 
-    private void broadcastMessage(String str) {
+    private void broadcastPacket(String str) {
         out = str.getBytes();
         try{
             DatagramPacket packet = new DatagramPacket(out,out.length, InetAddress.getByName("255.255.255.255"),4321);
@@ -201,7 +206,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         try {
             System.out.println("Broadcast Server running...");
             while(true) {
-                String str = receiveMessage();
+                receivePacket();
             }
         } catch (Exception e) {
             System.out.println("Error in BroadcastServer : "+e .toString());

@@ -4,14 +4,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-public class User implements LocalUsernameChangedGenerator {
+public class User {
 
     private String id ;
     private String username ;
     private String ip;
-    private ArrayList<Conversation> convos ;
 
-    private LocalUsernameChangedListener localUsernameChangedListener ;
 
     public User(String id, String username, String ip){
         this.id = id ;
@@ -45,9 +43,6 @@ public class User implements LocalUsernameChangedGenerator {
         return username;
     }
 
-    public ArrayList<Conversation> getConvos() {
-        return convos;
-    }
 
     public void setID(String ID) {
         this.id = ID;
@@ -55,22 +50,6 @@ public class User implements LocalUsernameChangedGenerator {
 
     public void setUsername(String username){
         this.username = username;
-    }
-
-    public void setUsernameAndFireEvent(String username) {
-        this.username = username;
-      //  this.FireLocalUsernameChangedEvent(new LocalUsernameChangedEvent(this)); //TODO delete the localuseramechanged class
-    }
-
-    public void setConvos(ArrayList<Conversation> convos) {
-        this.convos = convos;
-    }
-
-    private void FireLocalUsernameChangedEvent(LocalUsernameChangedEvent e){
-            localUsernameChangedListener.localUsernameChanged(e);
-    }
-    public void addLocalUsernameChangedListener(LocalUsernameChangedListener listener){
-        localUsernameChangedListener = listener;
     }
 
 }

@@ -8,9 +8,15 @@ public class Message {
 
     private String content;
     private Date date;
+    private String from ;
+    private String to ;
 
-    public Message(String content){
+    //TODO use the right constructor to memorize from and to
+    public Message(String content, String from, String to){
+   // public Message(String content){
         this.content = content;
+        this.from = from;
+        this.to =to;
        // DateFormat dateF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.date = new Date();
       //  this.date = dateF.format(d);

@@ -120,12 +120,6 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 		jtf.setText("");
 		chatBox.append("<< "+myusername+" << : " + msg + "\n");
 		listener.NewMessageToSend(new NewMessageToSendEvent(this, msg));
-		
-
-		//TODO
-		// Here, we should call/tell the system that
-		// we want to send the message in the JTextField input (jtf)
-		
 	}
 	
 	// Updates the chat box according to the GUI events done by the user

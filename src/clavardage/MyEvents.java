@@ -4,23 +4,6 @@ import java.net.Socket;
 import java.util.EventListener;
 import java.util.EventObject;
 
-
-class LocalUsernameChangedEvent extends EventObject {
-
-    public LocalUsernameChangedEvent(Object source) {
-        super(source);
-    }
-}
-
-interface LocalUsernameChangedListener extends EventListener {
-    void localUsernameChanged(LocalUsernameChangedEvent evt);
-}
-
-interface LocalUsernameChangedGenerator {
-    void addLocalUsernameChangedListener(LocalUsernameChangedListener listener) ;
-}
-
-
 class LogInEvent extends EventObject {
     public String name;
     public LogInEvent(Object source,String pseudo) {
@@ -42,19 +25,19 @@ interface LogInEventGenerator {
 
 
 
-class RemoteConnexionEvent extends EventObject {
+class RemoteConnectionEvent extends EventObject {
 Socket sock ;
-    public RemoteConnexionEvent(Object source, Socket sock) {
+    public RemoteConnectionEvent(Object source, Socket sock) {
         super(source);
         this.sock = sock;
     }
 }
 
-interface RemoteConnexionListener extends EventListener {
-    void remoteConnexion(RemoteConnexionEvent evt);
+interface RemoteConnectionListener extends EventListener {
+    void remoteConnection(RemoteConnectionEvent evt);
 }
 
-interface RemoteConnexionGenerator {
-    void addRemoteConnexionListener(RemoteConnexionListener listener) ;
+interface RemoteConnectionEventGenerator {
+    void addRemoteConnectionListener(RemoteConnectionListener listener) ;
 }
 
