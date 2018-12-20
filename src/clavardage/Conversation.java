@@ -19,8 +19,8 @@ public class Conversation {
         this.messages = new ArrayList<Message>();
     }
 
-    public void setRemoteID(String remoteID) {
-        this.remoteID = remoteID;
+    public void setLocalUsername(String name) {
+        this.currentLocalNickname = name;
     }
 
     public void setCurrentRemoteNickname(String remoteUsername){ this.currentRemoteNickname = remoteUsername; }

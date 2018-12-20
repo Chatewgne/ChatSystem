@@ -54,6 +54,7 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
     @Override
     public void changedLocalUsername(String e){
         bs.broadcastUsernameChanged(e);
+        cs.updateLocalNicknameInConvo(e);
         userListWindow.refreshNicknameLabel(e);
     }
 

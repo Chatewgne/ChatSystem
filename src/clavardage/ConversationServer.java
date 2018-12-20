@@ -74,7 +74,6 @@ public void acceptConv(User remote, User local, Socket sock) {
         this.listener = listener;
     }
 
-    //todo correct connection closure
     private static void closeConversation(int Num){
         convos.get(Num).closeConversation();
         convos.remove(Num);
@@ -100,6 +99,20 @@ public void acceptConv(User remote, User local, Socket sock) {
                 actualConvo.refreshRemoteUsername(username);
                 conversationFound = true;
             }
+        }
+    }
+
+
+    public void updateLocalNicknameInConvo(String username){
+
+        Iterator<ConversationManager> itrConvos = convos.iterator();
+        ConversationManager actualConvo;
+
+        // Iteration on the conversation manager list until we find a corresponding conversation
+        while(itrConvos.hasNext()){
+
+            actualConvo = itrConvos.next();
+            actualConvo.getConv().setLocalUsername(username);
 
         }
 

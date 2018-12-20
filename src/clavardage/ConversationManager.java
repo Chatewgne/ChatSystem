@@ -43,6 +43,8 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
     public void windowClosing(WindowEvent e) {
         sendMessage("--end--string--");
         try {
+            in.close();
+            out.flush();
             sock.close();
         } catch (Exception i) {
             System.out.println("ConvMan failed closin socket :  " + i.toString());
@@ -70,6 +72,8 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
     {
         try {
             System.out.println("Closing communication");
+            in.close();
+            out.close();
             this.sock.close();
             this.window.displayInfo("Remote User a quitté la conv");
         }
@@ -106,7 +110,8 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
     public void initConvo(String ip, int port){
         try {
             System.out.println("Initiating convo from socket " + ip + " "+ port);
-            String newip= ip.split("/")[1];
+            String newip= ip;
+            if (ip.contains("/")){newip= ip.split("/")[1];}
             this.sock = new Socket(newip, port);
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));

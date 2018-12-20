@@ -115,14 +115,14 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         if (!(source.toString()==myip)) {
             String[] str = receive.split(":"); //array stores information : str[1] is packet type (CO,IN,CH,QU)
             if (str[0].equals("CO")) { //if someone connected to the system (packet CO) then
-                if (str[1].equals(localUser.getID())){ //if this is my own connection packet (str[1] = my own id) , remember my IP adress
+                if (str[1].equals(localUser.getID())) { //if this is my own connection packet (str[1] = my own id) , remember my IP adress
                     myip = source.toString();
                     System.out.println("My ip is : " + myip);
-                }else {//if this connection packet is from someone else, store them and send them information about the system (list of users and their addresses : remote users + myself
-                  treatConnectionPacket(str,source);
+                } else {//if this connection packet is from someone else, store them and send them information about the system (list of users and their addresses : remote users + myself
+                    treatConnectionPacket(str, source);
                 }
             } else if (str[0].equals("CH")) { //TODO if someone changed name
-                if (!(str[1].equals(localUser.getID()))){  //do nothing if it's my own packet
+                if (!(str[1].equals(localUser.getID()))) {  //do nothing if it's my own packet
                     treatUsernameChangedPacket(str);
                 }
             } else if (str[0].equals("QU")) {//TODO if someone disconnected
@@ -133,11 +133,10 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
                 system.incrementConversationCount();
             } else if (str[0].equals("C-")) {
                 system.decrementConversationCount();
-            }
-            }
-            else {
+            } else {
                 System.out.println("~~~~~~~ Recu UDP datagram AU FORMAT INCONNU ~~~~~~~~ " + receive);
             }
+        }
         } catch (Exception e) {
             System.out.println("Couldn't receive datagram packet : " + e.toString());
         }
