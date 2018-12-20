@@ -105,6 +105,27 @@ public void acceptConv(User remote, User local, Socket sock) {
 
     }
 
+    public ConversationManager getConversationManager(User remote){
+        Iterator<ConversationManager> itrConvos = convos.iterator();
+        ConversationManager actualConvo = new ConversationManager();
+        boolean conversationFound = false;
+
+        // Iteration on the conversation manager list until we find a corresponding conversation
+        while(itrConvos.hasNext() && !conversationFound){
+
+            actualConvo = itrConvos.next();
+
+            if(remote.getID().equals(actualConvo.getRemoteUserID())){
+                conversationFound = true;
+            }
+        }
+        return actualConvo;
+    }
+
+    public Conversation getConversation(User remote){
+        return getConversationManager(remote).getConv();
+    }
+
 
 
     // public static void main(String[] args) {

@@ -9,6 +9,8 @@ public class Conversation {
     private String currentLocalNickname;
     private ArrayList<Message> messages;
 
+    public Conversation(){}
+
     public Conversation(User remote, User local){
         this.remoteID = remote.getID();
         this.myID = local.getID();

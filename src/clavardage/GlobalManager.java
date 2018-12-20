@@ -46,6 +46,7 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
     public void remoteConnection(RemoteConnectionEvent evt) {
         Socket sock = evt.sock;
         User remote = bs.getUserFromIP(sock.getInetAddress().toString());
+        bs.broadcastNewConversation();
         cs.acceptConv(remote,bs.getLocalUser(),sock);
     }
 
@@ -61,6 +62,10 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
         userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
     }
 
+    public void displayHistoryRequestFromGUI(String userid){
+        //TODO       cs.getConversation(bs.getUserFromID(userid));
+    }
+
     public void newNicknameRequestFromGUI() {
         logWindow.start(false);
 
@@ -73,8 +78,12 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
         this.userListWindow.addWindowListener(this);
     }
     public void sessionRequestFromGUI(String userID){
-        User u = bs.getUserFromId(userID) ;
-        cs.requestNewConversation(u, bs.getLocalUser());
+        if (bs.getConversationCount() < 1000) {
+            User u = bs.getUserFromId(userID);
+            cs.requestNewConversation(u, bs.getLocalUser());
+            bs.broadcastNewConversation();
+        }
+        else { System.out.println("Il y a trop de conversations en cours. Veuillez réessayer plus tard."); }
     }
 
     public void start(){

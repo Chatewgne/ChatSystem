@@ -46,6 +46,15 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         this.list = listener;
     }
 
+    public void broadcastNewConversation(){
+        broadcastPacket("C+");
+    }
+
+    public void broadcastConversationClosed(){
+        broadcastPacket("C-");
+    }
+
+
     private void initSocket()
     {
         try {
@@ -120,11 +129,15 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
                 treatDisconnectionPacket(str);
             } else if (str[0].equals("IN")) {//TODO if someone is responding with some information
                 treatInformationPacket(str);
-            } else {
+            } else if (str[0].equals("C+")) {
+                system.incrementConversationCount();
+            } else if (str[0].equals("C-")) {
+                system.decrementConversationCount();
+            }
+            }
+            else {
                 System.out.println("~~~~~~~ Recu UDP datagram AU FORMAT INCONNU ~~~~~~~~ " + receive);
             }
-
-        }
         } catch (Exception e) {
             System.out.println("Couldn't receive datagram packet : " + e.toString());
         }
@@ -162,6 +175,10 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
                 }
             dropInformationPackets=true;
         }
+    }
+
+    public int getConversationCount(){
+        return system.getCurrentConversations();
     }
 
     private String myself(){
