@@ -33,13 +33,17 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
      //   this.localUser = new User("");
         this.bs = new BroadcastServer(this);
         bs.addLogInListener(this);
-        this.cs  = new ConversationServer();
+        this.cs  = new ConversationServer(this);
         cs.addRemoteConnectionListener(this);
     }
 
     public void remoteDisconnection(){
         System.out.println("GlobalManager detected disconnection");
         userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
+    }
+
+    public void conversationClosed(){
+        bs.broadcastConversationClosed();
     }
 
 
