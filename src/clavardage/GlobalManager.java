@@ -5,7 +5,7 @@ import java.awt.event.WindowListener;
 import java.net.Socket;
 import java.util.HashMap;
 
-public class GlobalManager implements RemoteConnexionListener, UserListGUIEventListener, WindowListener, LogInListener, UserListChangesListener{
+public class GlobalManager implements RemoteConnectionListener, UserListGUIEventListener, WindowListener, LogInListener, UserListChangesListener{
     private UserListWindow userListWindow ;
     private LoggingWindow logWindow;
     private BroadcastServer bs;
@@ -33,7 +33,7 @@ public class GlobalManager implements RemoteConnexionListener, UserListGUIEventL
         this.bs = new BroadcastServer(this);
         bs.addLogInListener(this);
         this.cs  = new ConversationServer();
-        cs.addRemoteConnexionListener(this);
+        cs.addRemoteConnectionListener(this);
     }
 
     public void remoteDisconnection(){
@@ -43,13 +43,13 @@ public class GlobalManager implements RemoteConnexionListener, UserListGUIEventL
 
 
     @Override
-    public void remoteConnexion(RemoteConnexionEvent evt) {
+    public void remoteConnection(RemoteConnectionEvent evt) {
         Socket sock = evt.sock;
-        String remote = bs.getUserFromIP(sock.getInetAddress().toString()).getUsername();
-        cs.acceptConv(remote,bs.getLocalUsername(),sock);
+        User remote = bs.getUserFromIP(sock.getInetAddress().toString());
+        cs.acceptConv(remote,bs.getLocalUser(),sock);
     }
     public void changedLocalUsername(String e){
-        bs.localUsernameChanged(e);
+        bs.broadcastUsernameChanged(e);
         userListWindow.refreshNicknameLabel(e);
     }
     public void changedRemoteUsername(String id, String username){
@@ -70,7 +70,7 @@ public class GlobalManager implements RemoteConnexionListener, UserListGUIEventL
     }
     public void sessionRequestFromGUI(String userID){
         User u = bs.getUserFromId(userID) ;
-        cs.requestNewConversation(u, bs.getLocalUsername());
+        cs.requestNewConversation(u, bs.getLocalUser());
     }
 
     public void start(){

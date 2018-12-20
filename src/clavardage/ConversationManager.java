@@ -24,10 +24,10 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
     public ConversationManager(){
         //  this.window.addWindowListener(this);
     }
-    public ConversationManager(String remote, String local){
+    public ConversationManager(User remote, User local){
       //  this.window.addWindowListener(this);
         this.conv = new Conversation(remote,local);
-        this.window = new ChatWindow("-- You are speaking to "+remote +"--",remote,local);
+        this.window = new ChatWindow("-- You are speaking to "+remote.getUsername() +"--",remote.getUsername(),local.getUsername());
     }
     public ConversationManager(Socket sock){
         this.sock = sock ;
@@ -118,6 +118,7 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
         try {
             out.write(mess + "\n");
             out.flush();
+            conv.addMessage(mess,true);
         }
         catch (Exception e) {
             System.out.println("Couldn't send message :" + e.toString());
@@ -132,11 +133,11 @@ public class ConversationManager extends Thread implements NewMessageToSendListe
         String textmess = in.readLine();
         if (!(textmess==null)) {
                     if (!(textmess.equals("--end--string--"))) {
-                        Message mess = new Message(textmess);
-                        conv.addMessage(mess);
+                      //  Message mess = new Message(textmess,false);
+                        conv.addMessage(textmess,false);
                         // DateFormat dateFormat  = new SimpleDateFormat("DD/MM HH:MM:SS") ;
                         // String date = dateFormat.format(mess.getDate());
-                        window.displayReceivedMessage(mess.getContent());
+                        window.displayReceivedMessage(textmess);
                     } else {
                         // if(textmess.equals("--end--string--")){
                         keepgoing = false;

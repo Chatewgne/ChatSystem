@@ -1,40 +1,22 @@
 package clavardage;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class ConversationServer extends Thread implements RemoteConnexionGenerator, UserListGUIEventGenerator {
+public class ConversationServer extends Thread implements RemoteConnectionEventGenerator, UserListGUIEventGenerator {
     private static ArrayList<ConversationManager> convos;
     private static ServerSocket servsock ;
-    private RemoteConnexionListener listener ;
+    private RemoteConnectionListener listener ;
     private UserListGUIEventListener list;
 
-   /* private static int findFreePort(){
-        int res = -1 ;
-        for (int o = 1024; o<5000; o++){
-            try {
-                Socket test = new Socket("localhost", o);
-                //System.out.println("eeeh");
-            } catch (Exception e){
-                System.out.println("Found free port :" + o);
-                res = o ;
-                break;
-            }
-        }
-        return res;
-    }*/
-
-   public void addUserListGUIEventListener(UserListGUIEventListener list){
+       public void addUserListGUIEventListener(UserListGUIEventListener list){
        this.list = list ;
    }
 
 
-    public static void initServer(int port){
+    private static void initServer(int port){
         try {
             servsock = new ServerSocket(port);
             convos = new ArrayList<ConversationManager>();
@@ -43,7 +25,7 @@ public class ConversationServer extends Thread implements RemoteConnexionGenerat
         }
     }
 
-    public void waitForConnection(){
+  /*  public void waitForConnection(){
         try {
             System.out.println("Waiting for connection on :" +servsock.toString());
             Socket sock = servsock.accept();
@@ -55,19 +37,19 @@ public class ConversationServer extends Thread implements RemoteConnexionGenerat
             System.out.println("Conv server error : " + e.toString());
         }
 
-    }
+    }*/
 
-    public void waitForConnection2() {
+    private void waitForConnection() {
         try {
             System.out.println("Waiting for connection on :" + servsock.toString());
             Socket sock = servsock.accept();
-            listener.remoteConnexion(new RemoteConnexionEvent(this, sock));
+            listener.remoteConnection(new RemoteConnectionEvent(this, sock));
         } catch (Exception e) {
             System.out.println("Conv server error : " + e.toString());
         }
     }
 
-public void acceptConv(String remote, String local, Socket sock) {
+public void acceptConv(User remote, User local, Socket sock) {
         try{
             convos.add(new ConversationManager(remote,local));
             System.out.println ("Accepting connection from " + sock.toString());
@@ -80,15 +62,15 @@ public void acceptConv(String remote, String local, Socket sock) {
     }
 
 
-    public static void requestNewConversation(User remoteuser, String mynickname){
-        ConversationManager convman = new ConversationManager(remoteuser.getUsername(),mynickname);
+    public static void requestNewConversation(User remoteuser, User local){
+        ConversationManager convman = new ConversationManager(remoteuser,local);
         convman.initConvo(remoteuser.getIP(),servsock.getLocalPort());
         convos.add(convman);
        // convos.get(convos.size()-1).initConvo(user.getIP(),servsock.getLocalPort());
     }
 
     @Override
-    public void addRemoteConnexionListener(RemoteConnexionListener listener) {
+    public void addRemoteConnectionListener(RemoteConnectionListener listener) {
         this.listener = listener;
     }
 
@@ -97,7 +79,7 @@ public void acceptConv(String remote, String local, Socket sock) {
         convos.get(Num).closeConversation();
         convos.remove(Num);
     }
-
+    //TODO close everything correctly
 
 
 
@@ -131,7 +113,7 @@ public void acceptConv(String remote, String local, Socket sock) {
             initServer(4321);
             System.out.println("Conversation Server running...");
             while (true) {
-                waitForConnection2();
+                waitForConnection();
             }
         }
         catch (Exception e) {
