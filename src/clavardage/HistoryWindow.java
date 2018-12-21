@@ -78,6 +78,7 @@ public class HistoryWindow extends JFrame{
         catch (Exception e){
         }
 
+
     }
 
     // Display every message given by the list in the chat history
