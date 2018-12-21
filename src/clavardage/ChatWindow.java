@@ -38,7 +38,7 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 		this.setTitle(windowName);
 		this.setSize(800, 600);
 		this.setResizable(true);
-		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		
 		
