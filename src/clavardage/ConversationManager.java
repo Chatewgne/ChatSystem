@@ -196,8 +196,6 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
 
     public void run(){
 
-
-        this.window.setVisible(true);
         this.window.addWindowListener(this);
         window.addNewMessageToSendListener(this);
 
@@ -205,6 +203,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
 
        while(true) {
            if (keepgoing) {
+               this.window.setVisible(true);
                try {
                    receiveAndStoreMessage();
                } catch (Exception e) {
