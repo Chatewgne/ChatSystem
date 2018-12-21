@@ -87,7 +87,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         try{
             DatagramPacket packet = new DatagramPacket(out,out.length, InetAddress.getByName("255.255.255.255"),4321);
             socket.send(packet);
-            System.out.println("Send connection UDP datagram : " +str);
+            System.out.println("Sent connection UDP datagram : " +str);
         } catch (Exception e) {
             System.out.println("Couldn't send UDP packet : "+e.toString());
         }
@@ -111,7 +111,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
             socket.receive(packet);
             receive = new String(packet.getData(), 0, packet.getLength());
             source = packet.getAddress();
-            System.out.println("Recu UDP datagram " + receive + "from host : " + source.toString() );
+            System.out.println("Received UDP datagram " + receive + "from host : " + source.toString() );
         if (!(source.toString()==myip)) {
             String[] str = receive.split(":"); //array stores information : str[1] is packet type (CO,IN,CH,QU)
             if (str[0].equals("CO")) { //if someone connected to the system (packet CO) then
