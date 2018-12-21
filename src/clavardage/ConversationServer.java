@@ -64,6 +64,7 @@ public void acceptConv(User remote, User local, Socket sock) {
                 convos.add(new ConversationManager(remote, local, listener2));
                 System.out.println("Accepting connection from " + sock.toString());
                 convos.get(convos.size() - 1).acceptConvo(sock);
+                convos.get(convos.size()-1).start();
             }
         }
         catch (Exception e) {
@@ -82,6 +83,7 @@ public void acceptConv(User remote, User local, Socket sock) {
             ConversationManager convman = new ConversationManager(remoteuser, local, listener2);
             convman.initConvo(remoteuser.getIP(), servsock.getLocalPort());
             convos.add(convman);
+            convman.start();
         }
     }
 
