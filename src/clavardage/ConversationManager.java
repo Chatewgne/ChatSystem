@@ -16,6 +16,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     private Conversation conv;
     private ChatWindow window;
 
+    private boolean keepgoing;
     private LogInListener list ;
 
     public ConversationManager(){
@@ -26,6 +27,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
         this.conv = new Conversation(remote,local);
         this.window = new ChatWindow("-- You are speaking to "+remote.getUsername() +"--",remote.getUsername(),local.getUsername());
         addLogInListener(list);
+        keepgoing = true;
     }
     public ConversationManager(Socket sock){
         this.sock = sock ;
@@ -43,6 +45,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     public void windowIconified(WindowEvent e){    }
     public void windowOpened(WindowEvent e){}
     public void windowClosing(WindowEvent e) {
+        keepgoing = false;
         sendEnd();
         try {
             in.close();
@@ -78,6 +81,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     public void closeConversation()
     {
         try {
+            keepgoing = false;
             System.out.println("Closing communication");
             in.close();
             out.close();
@@ -94,6 +98,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     }
     public void acceptConvo(Socket socket){
         try {
+            keepgoing = true;
             System.out.println("Accepting convo on socket :" + socket.toString());
             this.sock=socket;
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -119,6 +124,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
 
     public void initConvo(String ip, int port){
         try {
+            keepgoing = true;
             System.out.println("Initiating convo from socket " + ip + " "+ port);
             String newip= ip;
             if (ip.contains("/")){newip= ip.split("/")[1];}
@@ -153,8 +159,6 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     }
 
     private void receiveAndStoreMessage(){   //BLOQUANTE
-        Boolean keepgoing = true ;
-
         while (keepgoing){
             try {
         String textmess = in.readLine();
@@ -167,7 +171,6 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
                         window.displayReceivedMessage(textmess);
                     } else {
                         // if(textmess.equals("--end--string--")){
-                        keepgoing = false;
                         closeConversation();
                     }
                 }
