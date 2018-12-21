@@ -19,6 +19,8 @@ class UserPanel extends JPanel implements ActionListener, UserPanelEventGenerato
 
     private JButton engageSessionButton = new JButton("Engage session");
 
+    private JButton showHistoryButton = new JButton("Show history");
+
     /*  Interface to the userListWindow
         If something happens in this userpanel (like a click on "Engage session"),
         the UserListWindow will be informed of this event and will be given the corresponding userID.
@@ -32,16 +34,18 @@ class UserPanel extends JPanel implements ActionListener, UserPanelEventGenerato
         this.userID = user.getID();
         this.username = user.getUsername();
 
-        this.setLayout(new GridLayout(1,2));
+        this.setLayout(new GridLayout(1,2, 10, 0));
 
         userLabel.setText(username);
         // userLabel.setPreferredSize(new Dimension(400,30));
 
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
+        showHistoryButton.addActionListener(this);
         engageSessionButton.addActionListener(this);
 
         this.add(userLabel);
+        this.add(showHistoryButton);
         this.add(engageSessionButton);
 
     }
@@ -76,7 +80,14 @@ class UserPanel extends JPanel implements ActionListener, UserPanelEventGenerato
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        this.userListWindow.engageSessionButtonRequest(this.getUserID());
+
+        Object source = e.getSource();
+
+        if(source == engageSessionButton)
+            this.userListWindow.engageSessionButtonRequest(this.getUserID());
+        else if(source == showHistoryButton)
+            this.userListWindow.showHistoryButtonRequest(this.getUserID());
+
     }
 
     @Override
@@ -87,6 +98,7 @@ class UserPanel extends JPanel implements ActionListener, UserPanelEventGenerato
 
 interface UserPanelEventListener {
     void engageSessionButtonRequest(String userID);
+    void showHistoryButtonRequest(String userID);
 }
 
 interface UserPanelEventGenerator {

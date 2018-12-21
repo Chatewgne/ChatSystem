@@ -137,6 +137,11 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
     }
 
     @Override
+    public void showHistoryButtonRequest(String userID) {
+        this.userListGUIEventListener.displayHistoryRequestFromGUI(userID);
+    }
+
+    @Override
     /*  Listens to the "Change nickname" button
         and tells the UserListGUIListener that this window asks for a new nickname
      */
