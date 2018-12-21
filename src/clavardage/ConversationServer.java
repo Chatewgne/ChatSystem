@@ -56,24 +56,33 @@ public class ConversationServer extends Thread implements RemoteConnectionEventG
     }
 
 public void acceptConv(User remote, User local, Socket sock) {
-        try{
-            convos.add(new ConversationManager(remote,local,listener2));
-            System.out.println ("Accepting connection from " + sock.toString());
-            convos.get(convos.size()-1).acceptConvo(sock);
+        try {
+            if (existsConversationWith(remote)) {
+                getConversationManager(remote).acceptConvo(sock);
+                System.out.println("Accepting connection from " + sock.toString());
+            } else {
+                convos.add(new ConversationManager(remote, local, listener2));
+                System.out.println("Accepting connection from " + sock.toString());
+                convos.get(convos.size() - 1).acceptConvo(sock);
+            }
         }
         catch (Exception e) {
             System.out.println("Conv server error : " + e.toString());
         }
 
+
     }
 
 
+
     public void requestNewConversation(User remoteuser, User local){
-        ConversationManager convman = new ConversationManager(remoteuser,local,listener2);
-        convman.initConvo(remoteuser.getIP(),servsock.getLocalPort());
-        convos.add(convman);
-       // convos.get(convos.size()-1).initConvo(user.getIP(),servsock.getLocalPort());
-        //TODO reopen the old conv if there is one
+        if (existsConversationWith(remoteuser)){
+            getConversationManager(remoteuser).initConvo(remoteuser.getIP(),servsock.getLocalPort());
+        } else {
+            ConversationManager convman = new ConversationManager(remoteuser, local, listener2);
+            convman.initConvo(remoteuser.getIP(), servsock.getLocalPort());
+            convos.add(convman);
+        }
     }
 
     @Override
@@ -124,7 +133,7 @@ public void acceptConv(User remote, User local, Socket sock) {
 
     }
 
-    public ConversationManager getConversationManager(User remote){
+    private boolean existsConversationWith(User remote){
         Iterator<ConversationManager> itrConvos = convos.iterator();
         ConversationManager actualConvo = new ConversationManager();
         boolean conversationFound = false;
@@ -138,13 +147,25 @@ public void acceptConv(User remote, User local, Socket sock) {
                 conversationFound = true;
             }
         }
-        return actualConvo;
+        return conversationFound;
     }
 
-    public Conversation getConversation(User remote){
-        return getConversationManager(remote).getConv();
-    }
 
+    public ConversationManager getConversationManager(User remote) {
+            Iterator<ConversationManager> itrConvos = convos.iterator();
+            ConversationManager actualConvo = new ConversationManager();
+
+            // Iteration on the conversation manager list until we find a corresponding conversation
+            while (itrConvos.hasNext()) {
+
+                actualConvo = itrConvos.next();
+
+                if (remote.getID().equals(actualConvo.getRemoteUserID())) {
+                    break;
+                }
+            }
+            return actualConvo;
+    }
 
 
     // public static void main(String[] args) {
