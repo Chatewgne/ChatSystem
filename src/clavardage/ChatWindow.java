@@ -22,7 +22,8 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 	private String myusername;
 	private String remoteuser ;
 	private JButton sendButton = new JButton("Send");
-	
+
+	private boolean canSend = true;
 	
 	// Extern listener
 	private NewMessageToSendListener listener;
@@ -109,6 +110,23 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 		chatBox.append( "--- " + mess + " ---\n");
 	}
 
+	// Notify in the text box that the user left and block any possibility to write or send a message.
+	public void notifyRemoteUserLeftInGUI(){
+
+		// Put the information in the chat box
+		chatBox.append("--- Remote User left the conversation. --- \n");
+
+		// Freeze the inputs
+		jtf.setEditable(false);
+		jtf.setText("");
+		sendButton.setEnabled(false);
+
+
+		// Block the possibility to send a message
+		canSend = false;
+
+	}
+
 
 	public void refreshRemoteUsernameinChatWindow(String remoteUsername){
 		this.setTitle("-- You are speaking to "+ remoteUsername +"--");
@@ -138,7 +156,10 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 		Object source = arg0.getSource();
 		
 		if(source == sendButton || source == jtf) {
-			sendMessageInField();
+
+			if(canSend)
+				sendMessageInField();
+
 		}
 	}
 	

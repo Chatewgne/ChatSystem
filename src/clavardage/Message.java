@@ -31,6 +31,8 @@ public class Message {
         return date;
     }
 
+    public String getSender() { return from; }
+
     public void setContent(String content) {
         this.content = content;
     }
