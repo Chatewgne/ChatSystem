@@ -17,37 +17,50 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     private ChatWindow window;
 
     private boolean keepgoing;
-    private LogInListener list ;
+    private LogInListener list;
 
-    public ConversationManager(){
+    public ConversationManager() {
         //  this.window.addWindowListener(this);
     }
-    public ConversationManager(User remote, User local, LogInListener list){
-      //  this.window.addWindowListener(this);
-        this.conv = new Conversation(remote,local);
-        this.window = new ChatWindow("-- You are speaking to "+remote.getUsername() +"--",remote.getUsername(),local.getUsername());
+
+    public ConversationManager(User remote, User local, LogInListener list) {
+        //  this.window.addWindowListener(this);
+        this.conv = new Conversation(remote, local);
+        this.window = new ChatWindow("-- You are speaking to " + remote.getUsername() + "--", remote.getUsername(), local.getUsername());
         addLogInListener(list);
         keepgoing = true;
     }
-    public ConversationManager(Socket sock){
-        this.sock = sock ;
+
+    public ConversationManager(Socket sock) {
+        this.sock = sock;
         //this.window.addWindowListener(this);
     }
 
-    public void addLogInListener(LogInListener list){
+    public void addLogInListener(LogInListener list) {
         this.list = list;
     }
-    public void windowDeactivated(WindowEvent e){}
 
-    public void windowActivated(WindowEvent e){}
-    public void windowDeiconified(WindowEvent e){
+    public void windowDeactivated(WindowEvent e) {
     }
-    public void windowIconified(WindowEvent e){    }
-    public void windowOpened(WindowEvent e){}
-    public void windowClosing(WindowEvent e) {
-        keepgoing = false;
 
-        sendEnd();
+    public void windowActivated(WindowEvent e) {
+    }
+
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    public void windowIconified(WindowEvent e) {
+    }
+
+    public void windowOpened(WindowEvent e) {
+    }
+
+    public void windowClosing(WindowEvent e) {
+
+        if (keepgoing) {
+            keepgoing = false;
+            sendEnd();
+
         try {
             in.close();
             out.close();
@@ -56,6 +69,9 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
             System.out.println("ConvMan failed closin socket :  " + i.toString());
         }
     }
+
+}
+
     public void windowClosed(WindowEvent e){
     }
 
@@ -111,7 +127,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
 
 
     public void reopen(){
-        this.window.setVisible(true);
+        this.window.reOpenWindow();
     }
    /* public void initConvo(String ip, int port, Socket sock){
         try {
