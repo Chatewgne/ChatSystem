@@ -143,6 +143,8 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 		// Block the possibility to send a message
 		canSend = true;
 
+		this.setVisible(true);
+
 	}
 
 
