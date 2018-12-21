@@ -46,6 +46,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     public void windowOpened(WindowEvent e){}
     public void windowClosing(WindowEvent e) {
         keepgoing = false;
+
         sendEnd();
         try {
             in.close();
@@ -54,6 +55,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
         } catch (Exception i) {
             System.out.println("ConvMan failed closin socket :  " + i.toString());
         }
+        list.conversationClosed();
     }
     public void windowClosed(WindowEvent e){
     }
@@ -86,7 +88,6 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
             in.close();
             out.close();
             this.sock.close();
-            list.conversationClosed();
 
             //
             this.window.notifyRemoteUserLeftInGUI();
@@ -159,7 +160,6 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     }
 
     private void receiveAndStoreMessage(){   //BLOQUANTE
-        while (keepgoing){
             try {
         String textmess = in.readLine();
         if (!(textmess==null)) {
@@ -178,7 +178,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
              System.out.println("Coulnd't read message ____:" + e.toString());
             }
         }
-    }
+
 
     /*private String receiveMessage(){   //BLOQUANTE
         String c ="" ;
@@ -203,13 +203,15 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
 
         ////////////////////////TEST LOCAL COMMUNICATION///////////////////////////////
 
-     //   while(true) {
-            try{
-                receiveAndStoreMessage();
-        } catch (Exception e) {
-            System.out.println("Error on conversation " + e.toString() );
-        }
-      //  }
+       while(true) {
+           if (keepgoing) {
+               try {
+                   receiveAndStoreMessage();
+               } catch (Exception e) {
+                   System.out.println("Error on conversation " + e.toString());
+               }
+           }
+           //  }
        /*
        try{
             System.out.println("Sending ping...");
@@ -247,7 +249,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
             System.out.println("Error on conversation " + e.toString() );
         }*/
 
-
+       }
     }
 
 }

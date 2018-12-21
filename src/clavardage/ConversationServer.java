@@ -58,9 +58,11 @@ public class ConversationServer extends Thread implements RemoteConnectionEventG
 public void acceptConv(User remote, User local, Socket sock) {
         try {
             if (existsConversationWith(remote)) {
+                System.out.println("found pre-existing conv with "+ remote.getID());
                 getConversationManager(remote).acceptConvo(sock);
                 System.out.println("Accepting connection from " + sock.toString());
             } else {
+                System.out.println("creating conv with "+ remote.getID());
                 convos.add(new ConversationManager(remote, local, listener2));
                 System.out.println("Accepting connection from " + sock.toString());
                 convos.get(convos.size() - 1).acceptConvo(sock);
@@ -78,8 +80,10 @@ public void acceptConv(User remote, User local, Socket sock) {
 
     public void requestNewConversation(User remoteuser, User local){
         if (existsConversationWith(remoteuser)){
+            System.out.println("found pre-existing conv with "+ remoteuser.getID());
             getConversationManager(remoteuser).initConvo(remoteuser.getIP(),servsock.getLocalPort());
         } else {
+            System.out.println("creating conv with "+ remoteuser.getID());
             ConversationManager convman = new ConversationManager(remoteuser, local, listener2);
             convman.initConvo(remoteuser.getIP(), servsock.getLocalPort());
             convos.add(convman);

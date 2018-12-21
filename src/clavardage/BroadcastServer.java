@@ -51,6 +51,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
     }
 
     public void broadcastConversationClosed(){
+
         broadcastPacket("C-");
     }
 
