@@ -24,6 +24,8 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 	private JButton sendButton = new JButton("Send");
 
 	private boolean canSend = true;
+
+	private boolean isHidden = false;
 	
 	// Extern listener
 	private NewMessageToSendListener listener;
@@ -124,6 +126,22 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 
 		// Block the possibility to send a message
 		canSend = false;
+
+	}
+
+	public void reOpenWindow(){
+
+		// Put the information in the chat box
+		chatBox.append("--- Conversation reopened. --- \n");
+
+		// Freeze the inputs
+		jtf.setEditable(true);
+		jtf.setText("");
+		sendButton.setEnabled(true);
+
+
+		// Block the possibility to send a message
+		canSend = true;
 
 	}
 
