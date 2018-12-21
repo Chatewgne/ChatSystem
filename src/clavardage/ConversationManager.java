@@ -106,7 +106,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
         } catch (Exception e) {
             System.out.println("Failed accepting convo:" + e.toString());
         }
-        this.run();
+       // this.start();
     }
 
    /* public void initConvo(String ip, int port, Socket sock){
@@ -119,7 +119,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
         } catch (Exception e) {
             System.out.println("Failed initiating conversation :" + e.toString());
         }
-        this.run();
+        this.start();
     }*/
 
     public void initConvo(String ip, int port){
@@ -134,7 +134,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
                     } catch (Exception e) {
             System.out.println("Failed initiating conversation :" + e.toString());
         }
-        this.run();
+        //this.start();
     }
 
     private void sendEnd(){
