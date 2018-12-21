@@ -88,7 +88,9 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
             out.close();
             this.sock.close();
             list.conversationClosed();
-            this.window.displayInfo("Remote User a quitté la conv");
+
+            //
+            this.window.notifyRemoteUserLeftInGUI();
         }
         catch (Exception e) {
             System.out.println("Conv manager couldn't close socket : " + e.toString());
