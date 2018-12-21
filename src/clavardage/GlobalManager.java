@@ -10,7 +10,7 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
     private LoggingWindow logWindow;
     private BroadcastServer bs;
     private ConversationServer cs;
-    private int maxConvAllowed = 1000;
+    private int maxConvAllowed = 1;
   //  private User localUser;
    // private SystemState ss ;
 

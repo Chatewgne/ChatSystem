@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class LoggingWindow extends JFrame implements ActionListener, NewMessageToSendEventGenerator, LogInEventGenerator{
-	//TODO why is newmessagetosendeventgenerator
+
 	// Panel of this window/JFrame
 	private JPanel mainPanel = new JPanel();
 	

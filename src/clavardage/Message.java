@@ -11,7 +11,6 @@ public class Message {
     private String from ;
     private String to ;
 
-    //TODO use the right constructor to memorize from and to
     public Message(String content, String from, String to){
    // public Message(String content){
         this.content = content;

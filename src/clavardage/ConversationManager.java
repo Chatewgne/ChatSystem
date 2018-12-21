@@ -48,7 +48,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     public void windowIconified(WindowEvent e){    }
     public void windowOpened(WindowEvent e){}
     public void windowClosing(WindowEvent e) {
-        sendMessage("--end--string--");
+        sendEnd();
         try {
             in.close();
             out.close();
@@ -113,7 +113,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
             this.sock = sock ;
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-            //TODO retrieve correct userid
+
         } catch (Exception e) {
             System.out.println("Failed initiating conversation :" + e.toString());
         }
@@ -128,11 +128,20 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
             this.sock = new Socket(newip, port);
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             this.out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-            //TODO retrieve correct userid
                     } catch (Exception e) {
             System.out.println("Failed initiating conversation :" + e.toString());
         }
         this.start();
+    }
+
+    private void sendEnd(){
+        try {
+            out.write("--end--string--" + "\n");
+            out.flush();
+        }
+        catch (Exception e) {
+            System.out.println("Couldn't send END message :" + e.toString());
+        }
     }
     private void sendMessage(String mess)
     {

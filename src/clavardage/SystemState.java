@@ -9,7 +9,6 @@ import java.util.Map;
 public class SystemState implements UserListChangesEventGenerator{
 
     private int currentConversations;
-//TODO verifier que y a pas trop de conversations avant d'en lancer une
     //private ArrayList<User> onlineUsers;
     private HashMap<String,User> onlineUsers;
 

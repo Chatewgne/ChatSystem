@@ -73,6 +73,7 @@ public void acceptConv(User remote, User local, Socket sock) {
         convman.initConvo(remoteuser.getIP(),servsock.getLocalPort());
         convos.add(convman);
        // convos.get(convos.size()-1).initConvo(user.getIP(),servsock.getLocalPort());
+        //TODO reopen the old conv if there is one
     }
 
     @Override
@@ -84,8 +85,6 @@ public void acceptConv(User remote, User local, Socket sock) {
         convos.get(Num).closeConversation();
         convos.remove(Num);
     }
-    //TODO close everything correctly
-
 
 
     // Updates the conversation with the user who changed his nickname
