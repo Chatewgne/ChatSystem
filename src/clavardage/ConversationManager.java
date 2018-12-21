@@ -55,7 +55,6 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
         } catch (Exception i) {
             System.out.println("ConvMan failed closin socket :  " + i.toString());
         }
-        list.conversationClosed();
     }
     public void windowClosed(WindowEvent e){
     }
@@ -110,6 +109,10 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
        // this.start();
     }
 
+
+    public void reopen(){
+        this.window.setVisible(true);
+    }
    /* public void initConvo(String ip, int port, Socket sock){
         try {
             System.out.println("Accepting convo from socket " + ip + " "+ port);
@@ -171,6 +174,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
                         window.displayReceivedMessage(textmess);
                     } else {
                         // if(textmess.equals("--end--string--")){
+                        list.conversationClosed();
                         closeConversation();
                     }
                 }
@@ -195,7 +199,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     }*/
 
     public void run(){
-
+        this.window.setVisible(true);
         this.window.addWindowListener(this);
         window.addNewMessageToSendListener(this);
 
@@ -203,7 +207,6 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
 
        while(true) {
            if (keepgoing) {
-               this.window.setVisible(true);
                try {
                    receiveAndStoreMessage();
                } catch (Exception e) {
