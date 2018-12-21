@@ -1,9 +1,4 @@
 package clavardage;
-
-
-import sun.awt.WindowClosingListener;
-import sun.reflect.annotation.ExceptionProxy;
-
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
@@ -205,13 +200,13 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
 
         ////////////////////////TEST LOCAL COMMUNICATION///////////////////////////////
 
-        while(true) {
+     //   while(true) {
             try{
                 receiveAndStoreMessage();
         } catch (Exception e) {
             System.out.println("Error on conversation " + e.toString() );
         }
-        }
+      //  }
        /*
        try{
             System.out.println("Sending ping...");
