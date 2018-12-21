@@ -86,7 +86,7 @@ class UserPanel extends JPanel implements ActionListener, UserPanelEventGenerato
         if(source == engageSessionButton)
             this.userListWindow.engageSessionButtonRequest(this.getUserID());
         else if(source == showHistoryButton)
-            this.userListWindow.showHistoryButtonRequest(this.getUserID());
+            this.userListWindow.showHistoryButtonRequest(this.getUserID(), username);
 
     }
 
@@ -98,7 +98,7 @@ class UserPanel extends JPanel implements ActionListener, UserPanelEventGenerato
 
 interface UserPanelEventListener {
     void engageSessionButtonRequest(String userID);
-    void showHistoryButtonRequest(String userID);
+    void showHistoryButtonRequest(String userID, String remoteUsername);
 }
 
 interface UserPanelEventGenerator {

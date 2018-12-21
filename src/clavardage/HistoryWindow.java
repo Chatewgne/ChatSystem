@@ -32,7 +32,7 @@ public class HistoryWindow extends JFrame{
         this.setTitle(windowName);
         this.setSize(800, 600);
         this.setResizable(true);
-        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         this.setLocationRelativeTo(null);
 
 

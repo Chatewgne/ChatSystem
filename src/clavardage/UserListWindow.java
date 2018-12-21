@@ -137,8 +137,8 @@ public class UserListWindow extends JFrame implements UserListGUIEventGenerator,
     }
 
     @Override
-    public void showHistoryButtonRequest(String userID) {
-        this.userListGUIEventListener.displayHistoryRequestFromGUI(userID);
+    public void showHistoryButtonRequest(String userID, String remoteUsername) {
+        this.userListGUIEventListener.displayHistoryRequestFromGUI(userID, remoteUsername);
     }
 
     @Override
