@@ -3,6 +3,7 @@ package clavardage;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GlobalManager implements RemoteConnectionListener, UserListGUIEventListener, WindowListener, LogInListener, UserListChangesListener{
@@ -68,8 +69,17 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
         userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
     }
 
-    public void displayHistoryRequestFromGUI(String userid){
-        //TODO       cs.getConversation(bs.getUserFromID(userid));
+    @Override
+    public void displayHistoryRequestFromGUI(String userID, String remoteUsername){
+
+        ArrayList<Message> messages = cs.getMessagesWith(userID);
+
+        if (messages != null)
+            new HistoryWindow("History of conversation with " + remoteUsername, messages);
+
+        else
+            new NotificationWindow("There is no history of conversation with this user yet.");
+
     }
 
     public void newNicknameRequestFromGUI() {
@@ -83,6 +93,8 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
         this.userListWindow.refreshUserListInGUI(bs.getOnlineUsers());
         this.userListWindow.addWindowListener(this);
     }
+
+
     public void sessionRequestFromGUI(String userID){
         if (bs.getConversationCount() < maxConvAllowed) {
             User u = bs.getUserFromId(userID);

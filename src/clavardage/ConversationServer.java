@@ -159,7 +159,7 @@ public void acceptConv(User remote, User local, Socket sock) {
 
     public ConversationManager getConversationManager(User remote) {
             Iterator<ConversationManager> itrConvos = convos.iterator();
-            ConversationManager actualConvo = new ConversationManager();
+            ConversationManager actualConvo = null;
 
             // Iteration on the conversation manager list until we find a corresponding conversation
             while (itrConvos.hasNext()) {
@@ -171,6 +171,26 @@ public void acceptConv(User remote, User local, Socket sock) {
                 }
             }
             return actualConvo;
+    }
+
+    public ArrayList<Message> getMessagesWith(String userID){
+
+        Iterator<ConversationManager> itrConvos = convos.iterator();
+        ConversationManager actualConvo;
+
+        ArrayList<Message> messages = null;
+
+        // Iteration on the conversation manager list until we find a corresponding conversation
+        while (itrConvos.hasNext() && messages == null) {
+
+            actualConvo = itrConvos.next();
+
+            if (actualConvo.getRemoteUserID() == userID) {
+                messages = actualConvo.getConv().getMessages();
+            }
+        }
+
+        return messages;
     }
 
 
