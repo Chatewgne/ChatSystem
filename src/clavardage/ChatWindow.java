@@ -112,7 +112,7 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 
 	public void refreshRemoteUsernameinChatWindow(String remoteUsername){
 		this.setTitle("-- You are speaking to "+ remoteUsername +"--");
-		chatBox.append("// " + this.remoteuser + " has changed its name for " + remoteUsername + " //");
+		chatBox.append("// " + this.remoteuser + " has changed its name for " + remoteUsername + " //\n");
 		this.remoteuser = remoteUsername;
 
 		// DEBUG
@@ -120,7 +120,7 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 	}
 
 	public void refreshLocalUsernameInChatWindow(String localUsername) {
-		chatBox.append("// " + "You just changed your nickname for " + localUsername + " //");
+		chatBox.append("// " + "You just changed your nickname for " + localUsername + " //\n");
 		this.myusername = localUsername;
 	}
 
