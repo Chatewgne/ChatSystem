@@ -19,7 +19,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     private ChatWindow window;
 
     private boolean keepgoing;
-    private Connection mysql;
+  //  private Connection mysql;
     private LogInListener list;
 
     public ConversationManager() {
@@ -32,7 +32,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
         this.window = new ChatWindow("-- You are speaking to " + remote.getUsername() + "--", remote.getUsername(), local.getUsername());
         addLogInListener(list);
         keepgoing = true;
-        this.mysql=mysql;
+     //   this.mysql=mysql;
     }
 
     public ConversationManager(Socket sock) {

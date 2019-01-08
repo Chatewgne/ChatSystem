@@ -41,9 +41,11 @@ public class Conversation {
             this.messages.add(new Message(mess,currentRemoteNickname, currentLocalNickname));
         }
         try {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = new Date();
+            String currentTime= sdf.format(date);
             Statement statement = mysql.createStatement();
-            int res = statement.executeUpdate("INSERT INTO chat_system.Messages (remoteID, date, received, content) VALUES ("+remoteID+","+ date+", "+(!(sent))+", "+mess+");");
+            int res = statement.executeUpdate("INSERT INTO chat_system.Messages (remoteID, date, received, content) VALUES ("+remoteID+","+ currentTime+", "+(!(sent))+", "+mess+");");
             if (!(res == 0)) {
                 System.out.println("Couldn't write to database");
             }
