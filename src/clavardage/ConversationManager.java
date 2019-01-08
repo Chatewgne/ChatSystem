@@ -114,7 +114,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     }
     public void acceptConvo(Socket socket){
         try {
-            keepgoing = true;
+          //  keepgoing = true;
             System.out.println("Accepting convo on socket :" + socket.toString());
             this.sock=socket;
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -127,6 +127,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
 
 
     public void reopen(){
+        keepgoing = true;
         this.window.reOpenWindow();
     }
    /* public void initConvo(String ip, int port, Socket sock){
@@ -144,7 +145,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
 
     public void initConvo(String ip, int port){
         try {
-            keepgoing = true;
+          //  keepgoing = true;
             System.out.println("Initiating convo from socket " + ip + " "+ port);
             String newip= ip;
             if (ip.contains("/")){newip= ip.split("/")[1];}
@@ -172,6 +173,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
             out.write(mess + "\n");
             out.flush();
             conv.addMessage(mess,true);
+            System.out.println("Trying to send message.....");
         }
         catch (Exception e) {
             System.out.println("Couldn't send message :" + e.toString());
@@ -179,6 +181,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     }
 
     private void receiveAndStoreMessage(){   //BLOQUANTE
+           System.out.println("j'écoute");
             try {
         String textmess = in.readLine();
         if (!(textmess==null)) {
@@ -222,9 +225,11 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
         ////////////////////////TEST LOCAL COMMUNICATION///////////////////////////////
 
        while(true) {
+          // System.out.print(keepgoing);
            if (keepgoing) {
                try {
                    receiveAndStoreMessage();
+
                } catch (Exception e) {
                    System.out.println("Error on conversation " + e.toString());
                }
