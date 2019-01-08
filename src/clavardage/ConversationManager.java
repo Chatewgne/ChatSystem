@@ -62,9 +62,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
             sendEnd();
 
         try {
-            in.close();
-            out.close();
-            sock.close();
+            closeConversation();
         } catch (Exception i) {
             System.out.println("ConvMan failed closin socket :  " + i.toString());
         }
@@ -103,9 +101,6 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
             in.close();
             out.close();
             this.sock.close();
-
-            //
-            this.window.notifyRemoteUserLeftInGUI();
         }
         catch (Exception e) {
             System.out.println("Conv manager couldn't close socket : " + e.toString());
@@ -193,8 +188,9 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
                         window.displayReceivedMessage(textmess);
                     } else {
                         // if(textmess.equals("--end--string--")){
+                        keepgoing=false;
                         list.conversationClosed();
-                        closeConversation();
+                        this.window.notifyRemoteUserLeftInGUI();
                     }
                 }
             } catch (Exception e) {
@@ -234,43 +230,6 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
                    System.out.println("Error on conversation " + e.toString());
                }
            }
-           //  }
-       /*
-       try{
-            System.out.println("Sending ping...");
-            sendMessage("Ping");
-            try {
-                sleep(2000);
-            }
-            catch(Exception e) {
-                System.out.println("Convo couldn't sleep : " + e.toString());
-            }
-           // String c = receiveMessage();
-          //  System.out.println("ConvMan received : "+ c);
-            receiveAndStoreMessage();
-            System.out.println("ConvMan closing communication");
-            closeConversation();
-        } catch (Exception e) {
-            System.out.println("Error on conversation " + e.toString() );
-        }
-      ////////////////////////TEST LOCAL COMMUNICATION///////////////////////////////
-
-       /*try{
-            System.out.println("Sending ping...");
-            sendMessage("Ping");
-            try {
-                sleep(2000);
-            }
-            catch(Exception e) {
-                System.out.println("Convo couldn't sleep : " + e.toString());
-            }
-            String c = receiveMessage();
-            System.out.println("ConvMan received : "+ c);
-            System.out.println("ConvMan closing communication");
-            closeConversation();
-        } catch (Exception e) {
-            System.out.println("Error on conversation " + e.toString() );
-        }*/
 
        }
     }
