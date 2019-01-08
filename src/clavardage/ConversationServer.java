@@ -67,7 +67,7 @@ public void acceptConv(User remote, User local, Socket sock) {
                 System.out.println("Accepting connection from " + sock.toString());
             } else {
                 System.out.println("creating conv with "+ remote.getID());
-                convos.add(new ConversationManager(remote, local, listener2));
+                convos.add(new ConversationManager(remote, local, listener2,mysql));
                 System.out.println("Accepting connection from " + sock.toString());
                 convos.get(convos.size() - 1).acceptConvo(sock);
                 convos.get(convos.size()-1).start();
@@ -89,7 +89,7 @@ public void acceptConv(User remote, User local, Socket sock) {
             getConversationManager(remoteuser).reopen();
         } else {
             System.out.println("creating conv with "+ remoteuser.getID());
-            ConversationManager convman = new ConversationManager(remoteuser, local, listener2);
+            ConversationManager convman = new ConversationManager(remoteuser, local, listener2,mysql);
             convman.initConvo(remoteuser.getIP(), servsock.getLocalPort());
             convos.add(convman);
             convman.start();
