@@ -6,6 +6,8 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.*;
+import java.sql.Connection;
+import java.sql.Statement;
 
 
 public class ConversationManager extends Thread implements LogInEventGenerator, NewMessageToSendListener, WindowListener {
@@ -17,18 +19,20 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     private ChatWindow window;
 
     private boolean keepgoing;
+    private Connection mysql;
     private LogInListener list;
 
     public ConversationManager() {
         //  this.window.addWindowListener(this);
     }
 
-    public ConversationManager(User remote, User local, LogInListener list) {
+    public ConversationManager(User remote, User local, LogInListener list,Connection mysql) {
         //  this.window.addWindowListener(this);
-        this.conv = new Conversation(remote, local);
+        this.conv = new Conversation(remote, local,mysql);
         this.window = new ChatWindow("-- You are speaking to " + remote.getUsername() + "--", remote.getUsername(), local.getUsername());
         addLogInListener(list);
         keepgoing = true;
+        this.mysql=mysql;
     }
 
     public ConversationManager(Socket sock) {
@@ -190,6 +194,7 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
                         conv.addMessage(textmess,false);
                         // DateFormat dateFormat  = new SimpleDateFormat("DD/MM HH:MM:SS") ;
                         // String date = dateFormat.format(mess.getDate());
+
                         window.displayReceivedMessage(textmess);
                     } else {
                         // if(textmess.equals("--end--string--")){
