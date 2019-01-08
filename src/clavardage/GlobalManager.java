@@ -18,7 +18,7 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
    // private SystemState ss ;
 
     //BDD management
-    String url = "jdbc:mysql://localhost:3306/chat_system";
+    String url = "jdbc:mysql://localhost:3306/chat_system?useLegacyDatetimeCode=false&serverTimezone=UTC";
     String mysqluser = "java";
     String pswd = "chat_system";
     Connection SQLconnection = null;
