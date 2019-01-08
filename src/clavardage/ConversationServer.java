@@ -2,6 +2,7 @@ package clavardage;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -11,14 +12,16 @@ public class ConversationServer extends Thread implements RemoteConnectionEventG
     private RemoteConnectionListener listener ;
     private UserListGUIEventListener list;
     private LogInListener listener2;
+    private Connection mysql;
 
        public void addUserListGUIEventListener(UserListGUIEventListener list){
        this.list = list ;
    }
 
 
-   public ConversationServer(LogInListener list)
+   public ConversationServer(LogInListener list, Connection mysql)
    {
+       this.mysql = mysql;
        this.listener2 = list;
    }
 

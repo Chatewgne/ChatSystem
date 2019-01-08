@@ -3,6 +3,8 @@ package clavardage;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,6 +16,12 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
     private int maxConvAllowed = 1000;
   //  private User localUser;
    // private SystemState ss ;
+
+    //BDD management
+    String url = "jdbc:mysql://localhost:3306/chat_systemsq";
+    String mysqluser = "java";
+    String pswd = "chat_system";
+    Connection SQLconnection = null;
 
     public void windowDeactivated(WindowEvent e){}
 
@@ -34,8 +42,16 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
      //   this.localUser = new User("");
         this.bs = new BroadcastServer(this);
         bs.addLogInListener(this);
-        this.cs  = new ConversationServer(this);
+        this.cs  = new ConversationServer(this,SQLconnection);
         cs.addRemoteConnectionListener(this);
+
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            SQLconnection = DriverManager.getConnection(url, mysqluser, pswd);
+            // System.out.println("it's ok");
+        } catch (Exception e) {
+            System.out.println("Java couldn't connect to MySQL : " + e.toString());
+        }
     }
 
     public void remoteDisconnection(){
