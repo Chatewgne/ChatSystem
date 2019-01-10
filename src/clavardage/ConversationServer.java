@@ -180,7 +180,7 @@ public void acceptConv(User remote, User local, Socket sock) {
             return actualConvo;
     }
 
-    public ArrayList<Message> getMessagesWith(String userID){
+    public ArrayList<Message> getMessagesWith(String userID,String remoteuser){
 
         Iterator<ConversationManager> itrConvos = convos.iterator();
         ConversationManager actualConvo;
@@ -193,7 +193,7 @@ public void acceptConv(User remote, User local, Socket sock) {
             actualConvo = itrConvos.next();
 
             if (actualConvo.getRemoteUserID() == userID) {
-                messages = actualConvo.getConv().getMessages();
+                messages = actualConvo.getConv().getMessages(userID,remoteuser);
             }
         }
 

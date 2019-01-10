@@ -2,6 +2,8 @@ package clavardage;
 import com.sun.org.apache.xml.internal.utils.SystemIDResolver;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,6 +65,35 @@ public class Conversation {
 
     public ArrayList<Message> getMessages() {
         return messages;
+    }
+
+    public ArrayList<Message> getMessages(String remoteID, String myid) {
+        getMessagesFromBDD(remoteID,myid);
+        return messages;
+    }
+
+    public void getMessagesFromBDD(String myid, String remoteID){
+        try {
+            Statement statement = mysql.createStatement();
+            ArrayList messages = new ArrayList<Message>();
+            ResultSet res = statement.executeQuery("SELECT * FROM Messages WHERE remoteID='"+remoteID+"'");
+            ResultSetMetaData metadata = res.getMetaData();
+            while (res.next()) {
+                String mess = res.getString(4);
+                Date date = res.getDate(2);
+                Boolean sent = res.getBoolean(3);
+                if (sent){
+                messages.add(new Message(mess,myid,remoteID,date));
+                }
+                else{
+                    messages.add(new Message(mess,remoteID,myid,date));
+                }
+            }
+            this.messages=messages;
+
+        } catch (Exception e){
+            System.out.println("Couldn't retrieve messages from BDD : "+e.toString());
+        }
     }
 
 
