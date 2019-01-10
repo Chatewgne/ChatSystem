@@ -86,7 +86,7 @@ public class Conversation {
     }
 
     public ArrayList<Message> getMessages(String remoteID, String myid) {
-        getMessagesFromBDD(remoteID,myid);
+        getMessagesFromBDD(myid,remoteID);
         return messages;
     }
 
@@ -94,10 +94,10 @@ public class Conversation {
         try {
             Statement statement = mysql.createStatement();
             ArrayList messages = new ArrayList<Message>();
-            ResultSet res = statement.executeQuery("SELECT * FROM Messages WHERE remoteID='"+remoteID+"'");
+            ResultSet res = statement.executeQuery("SELECT * FROM Messages WHERE remoteID='"+remoteID+"' ORDER BY date");
             while (res.next()) {
                 String mess = res.getString(4);
-                Date date = res.getDate(2);
+                Date date = res.getTimestamp(2);
                 Boolean sent = res.getBoolean(3);
                 if (sent){
                 messages.add(new Message(mess,myid,remoteID,date));
