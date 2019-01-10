@@ -63,7 +63,8 @@ public void acceptConv(User remote, User local, Socket sock) {
             if (existsConversationWith(remote)) {
                 System.out.println("found pre-existing conv with "+ remote.getID());
                 getConversationManager(remote).acceptConvo(sock);
-                getConversationManager(remote).reopen();
+               // getConversationManager(remote).reopen();
+                getConversationManager(remote).start();
                 System.out.println("Accepting connection from " + sock.toString());
             } else {
                 System.out.println("creating conv with "+ remote.getID());
@@ -86,7 +87,8 @@ public void acceptConv(User remote, User local, Socket sock) {
         if (existsConversationWith(remoteuser)){
             System.out.println("found pre-existing conv with "+ remoteuser.getID());
             getConversationManager(remoteuser).initConvo(remoteuser.getIP(),servsock.getLocalPort());
-            getConversationManager(remoteuser).reopen();
+           // getConversationManager(remoteuser).reopen();
+            getConversationManager(remoteuser).start();
         } else {
             System.out.println("creating conv with "+ remoteuser.getID());
             ConversationManager convman = new ConversationManager(remoteuser, local, listener2,mysql);

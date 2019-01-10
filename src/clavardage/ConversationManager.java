@@ -121,6 +121,10 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
         } catch (Exception e) {
             System.out.println("Failed accepting convo:" + e.toString());
         }
+        this.window.setVisible(true);
+        this.window.addWindowListener(this);
+        window.addNewMessageToSendListener(this);
+        keepgoing=true;
        // this.start();
     }
 
@@ -154,6 +158,10 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
                     } catch (Exception e) {
             System.out.println("Failed initiating conversation :" + e.toString());
         }
+        this.window.setVisible(true);
+        this.window.addWindowListener(this);
+        window.addNewMessageToSendListener(this);
+        keepgoing=true;
         //this.start();
     }
 
@@ -219,15 +227,12 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
     }*/
 
     public void run(){
-        this.window.setVisible(true);
-        this.window.addWindowListener(this);
-        window.addNewMessageToSendListener(this);
-
         ////////////////////////TEST LOCAL COMMUNICATION///////////////////////////////
 
-       while(true) {
+     /*  while(true) {
           // System.out.print(keepgoing);
-           if (keepgoing) {
+           if (keepgoing) {*/
+             while(keepgoing)
                try {
                    receiveAndStoreMessage();
 
@@ -237,6 +242,6 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
            }
 
        }
-    }
+   // }
 
-}
+//}
