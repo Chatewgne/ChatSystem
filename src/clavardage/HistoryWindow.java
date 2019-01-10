@@ -20,6 +20,10 @@ public class HistoryWindow extends JFrame{
 
     private JTextArea chatBox;
 
+    // Date formatter
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    String dateToDisplay;
+
 
     // Extern listener
     private NewMessageToSendListener listener;
@@ -61,26 +65,6 @@ public class HistoryWindow extends JFrame{
     }
 
 
-    // A debugging test
-    public static void main (String args[]) {
-        try {
-            ArrayList<Message> messages = new ArrayList<Message>();
-
-            for(int i = 0; i < 50 ; i++){
-                if(i%2 == 0)
-                    messages.add(new Message("Hey" + i, "Harry", "Yann"));
-                else
-                    messages.add(new Message("Yo" + i, "Yann", "Harry"));
-            }
-
-            HistoryWindow f = new HistoryWindow("History Window (debugging)",messages);
-        }
-        catch (Exception e){
-        }
-
-
-    }
-
     // Display every message given by the list in the chat history
     private void displayMessages(ArrayList<Message> messagesList){
 
@@ -99,7 +83,10 @@ public class HistoryWindow extends JFrame{
 
     // Display one message in the chat history
     private void displayOneMessage(Message message){
-        chatBox.append("<" + message.getSender() + "> : " + message.getContent() + "\n");
+
+        dateToDisplay= sdf.format(message.getDate());
+
+        chatBox.append(dateToDisplay + ": <" + message.getSender() + "> : " + message.getContent() + "\n");
     }
 
 
