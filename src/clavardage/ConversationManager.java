@@ -205,6 +205,10 @@ public class ConversationManager extends Thread implements LogInEventGenerator, 
                 } else {
                     // if(textmess.equals("--end--string--")){
                     keepgoing = false;
+
+                    // Since the remote user ended the conversation, we close the socket
+                    this.sock.close();
+
                     list.conversationClosed();
                     this.window.notifyRemoteUserLeftInGUI();
                 }
