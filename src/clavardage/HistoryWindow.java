@@ -1,15 +1,9 @@
 package clavardage;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.plaf.metal.OceanTheme;
-import javax.swing.text.DefaultCaret;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -86,7 +80,7 @@ public class HistoryWindow extends JFrame{
 
         dateToDisplay= sdf.format(message.getDate());
 
-        chatBox.append(dateToDisplay + ": <" + message.getSender() + "> : " + message.getContent() + "\n");
+        chatBox.append(dateToDisplay + ": <" + message.getIDSender() + "> : " + message.getContent() + "\n");
     }
 
 

@@ -3,6 +3,9 @@ package clavardage;
 import javax.swing.event.EventListenerList;
 import java.lang.reflect.Array;
 import java.net.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class BroadcastServer extends Thread implements LogInEventGenerator {
@@ -15,16 +18,19 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
     private String myip;
     private LogInListener list ;
     private boolean dropInformationPackets ; //I only need to accept one information packet at log in
+    private Connection sqlConnection;
+
   //  private boolean firs
 
     //TODO where is the localUser meant to be between here and GlobalManager
-    public BroadcastServer(GlobalManager globalManager) {
+    public BroadcastServer(GlobalManager globalManager, Connection sqlConnection) {
         system = new SystemState();
         system.addUserListChangesListener(globalManager);
         initSocket();
         this.in = new byte[256];
         this.out = new byte[256];
         this.dropInformationPackets = false ;
+        this.sqlConnection = sqlConnection;
     }
 
     public HashMap<String,User> getOnlineUsers(){
@@ -67,6 +73,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
     public void loggedIn(LogInEvent logged){
         try {
             localUser = new User(logged.name);
+            saveUserInDB(localUser.getID(),localUser.getUsername());
             broadcastLocalConnection(localUser);
          //   broadcastLocalConnection(new User("22","Nawal Guermouche"));//TODO THIS IS A DEBUG LINE ONLY
          //  broadcastLocalConnection(new User("445","Pipoudou"));//TODO THIS IS A DEBUG LINE ONLY
@@ -96,6 +103,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
 
     public void broadcastUsernameChanged(String e) {
         localUser.setUsername(e);
+        saveUserInDB(localUser.getID(),e);
         broadcastPacket("CH:" +localUser.getID()+":"+localUser.getUsername());
         System.out.println("Broadcast server detected local username changed to : " + e);
     }
@@ -148,6 +156,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         sendPacket(answer, source);
         System.out.println("Sent UDP datagram " + answer + "to host " + source);
         system.addOnlineUser(packet[1], new User(packet[1], packet[2], source.toString()));
+        saveUserInDB(packet[1],packet[2]);
     }
 
     private void treatDisconnectionPacket(String[] str){
@@ -160,6 +169,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
             system.changeRemoteUserNickname(str[1],str[2]);
             System.out.println("Detected username change on user " + str[1] +" now called "+ str[2]);
             list.changedRemoteUsername(str[1], str[2]);
+            saveUserInDB(str[1],str[2]);
         }
     }
 
@@ -171,6 +181,7 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
                     String[] ip = str[i].split("/");
                     String theip = ip[1];
                     system.addOnlineUser(str[i + 1], new User(str[i + 1], str[i + 2], theip)); // hasmap  : key = id, user(id,username,ip)
+                    saveUserInDB(str[i+1],str[i+2]);
                 }
                 }
             dropInformationPackets=true;
@@ -228,7 +239,33 @@ public class BroadcastServer extends Thread implements LogInEventGenerator {
         } catch (Exception e) {
             System.out.println("Error in BroadcastServer : "+e .toString());
         }
+    }
+
+
+    public void saveUserInDB(String userid, String nickname){
+
+        // Preparing the statement saving the users
+        PreparedStatement preparedStatement;
+
+        try {
+            preparedStatement = sqlConnection.prepareStatement(
+                    "INSERT INTO chat_system.users (userid,nickname) VALUES (?,?) ON DUPLICATE KEY UPDATE nickname=VALUES(nickname)"
+            );
+
+            preparedStatement.setString(1,userid);
+            preparedStatement.setString(2,nickname);
+
+            preparedStatement.executeUpdate();
+
         }
+        catch (SQLException e){
+            System.out.println("Couldn't prepare statement to save users : "+ e );
+        }
+
+
+    }
+
+
 }
 
 

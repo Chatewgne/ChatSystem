@@ -8,14 +8,15 @@ public class Message {
 
     private String content;
     private Date date;
-    private String from ;
-    private String to ;
+    private String fromID ;
+    private String fromNickname;
+    private String toID ;
 
-    public Message(String content, String from, String to,Date date){
+    public Message(String content, String fromID, String fromNickname, String toID,Date date){
         // public Message(String content){
         this.content = content;
-        this.from = from;
-        this.to =to;
+        this.fromID = fromID;
+        this.toID =toID;
       //  DateFormat dateF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.date = date;
     }
@@ -28,7 +29,7 @@ public class Message {
         return date;
     }
 
-    public String getSender() { return from; }
+    public String getIDSender() { return fromID; }
 
     public void setContent(String content) {
         this.content = content;

@@ -48,7 +48,7 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
         this.logWindow.addLogInListener(this);
 
      //   this.localUser = new User("");
-        this.bs = new BroadcastServer(this);
+        this.bs = new BroadcastServer(this, SQLconnection);
         bs.addLogInListener(this);
         this.cs  = new ConversationServer(this,SQLconnection);
         cs.addRemoteConnectionListener(this);

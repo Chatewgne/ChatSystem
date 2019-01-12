@@ -56,9 +56,9 @@ public class Conversation {
         Date date = new Date();
 
         if (sent){
-        this.messages.add(new Message(mess,currentLocalNickname,currentRemoteNickname,date));
+        this.messages.add(new Message(mess,myID,remoteID,currentLocalNickname,date));
         } else{
-            this.messages.add(new Message(mess,currentRemoteNickname, currentLocalNickname,date));
+            this.messages.add(new Message(mess,remoteID, myID,currentRemoteNickname,date));
         }
         try {
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -90,20 +90,26 @@ public class Conversation {
         return messages;
     }
 
-    public void getMessagesFromBDD(String myid, String remoteID){
+    public void getMessagesFromBDD(String myID, String remoteID){
         try {
             Statement statement = mysql.createStatement();
             ArrayList messages = new ArrayList<Message>();
             ResultSet res = statement.executeQuery("SELECT * FROM Messages WHERE remoteID='"+remoteID+"' ORDER BY date");
+
+
+            String myNickname = getNicknameWithIDFromDB(myID);
+            String remoteNickname = getNicknameWithIDFromDB(remoteID);
+
+
             while (res.next()) {
                 String mess = res.getString(4);
                 Date date = res.getTimestamp(2);
                 Boolean sent = res.getBoolean(3);
                 if (sent){
-                messages.add(new Message(mess,myid,remoteID,date));
+                messages.add(new Message(mess,myID,remoteID,myNickname,date));
                 }
                 else{
-                    messages.add(new Message(mess,remoteID,myid,date));
+                    messages.add(new Message(mess,remoteID,myID,remoteNickname,date));
                 }
             }
             this.messages=messages;
@@ -111,6 +117,34 @@ public class Conversation {
         } catch (Exception e){
             System.out.println("Couldn't retrieve messages from BDD : "+e.toString());
         }
+    }
+
+
+
+    private String getNicknameWithIDFromDB(String userID){
+
+        String nickname;
+
+        try {
+            Statement statement = mysql.createStatement();
+            ResultSet res = statement.executeQuery("SELECT * FROM users WHERE userid='" + userID);
+
+            if(res.next()){
+                nickname = res.getString("nickname");
+            }
+            else{
+                System.out.println("Couldn't find the nickname corresponding to this userID : " + userID);
+                nickname = userID;
+            }
+
+        }
+        catch (Exception e){
+            System.out.println("Couldn't retrieve nickname from DB of " + userID);
+            nickname = userID;
+        }
+
+        return nickname;
+
     }
 
 
