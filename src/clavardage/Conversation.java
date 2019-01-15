@@ -34,7 +34,7 @@ public class Conversation {
         try {
             // Preparing the statement saving the messages
             preparedStatement = mysql.prepareStatement(
-                    "INSERT INTO chat_system.Messages (remoteID, date, received, content) VALUES (?, ?, ?, ?);"
+                    "INSERT INTO chat_system.messages (remoteID, date, received, content) VALUES (?, ?, ?, ?);"
             );
         }
         catch (SQLException sqlException){
@@ -94,7 +94,7 @@ public class Conversation {
         try {
             Statement statement = mysql.createStatement();
             ArrayList messages = new ArrayList<Message>();
-            ResultSet res = statement.executeQuery("SELECT * FROM Messages WHERE remoteID='"+remoteID+"' ORDER BY date");
+            ResultSet res = statement.executeQuery("SELECT * FROM messages WHERE remoteID='"+remoteID+"' ORDER BY date");
 
 
             String myNickname = getNicknameWithIDFromDB(myID);
@@ -106,10 +106,10 @@ public class Conversation {
                 Date date = res.getTimestamp(2);
                 Boolean sent = res.getBoolean(3);
                 if (sent){
-                messages.add(new Message(mess,myID,remoteID,myNickname,date));
+                messages.add(new Message(mess,myID,myNickname,remoteID,date));
                 }
                 else{
-                    messages.add(new Message(mess,remoteID,myID,remoteNickname,date));
+                    messages.add(new Message(mess,remoteID,remoteNickname,myID,date));
                 }
             }
             this.messages=messages;
@@ -127,10 +127,11 @@ public class Conversation {
 
         try {
             Statement statement = mysql.createStatement();
-            ResultSet res = statement.executeQuery("SELECT * FROM users WHERE userid='" + userID);
+            ResultSet res = statement.executeQuery("SELECT * FROM users WHERE userid='" + userID+"'");
 
             if(res.next()){
                 nickname = res.getString("nickname");
+                System.out.println("Nickname found for this userID : " + userID + "is :" + nickname);
             }
             else{
                 System.out.println("Couldn't find the nickname corresponding to this userID : " + userID);
@@ -139,7 +140,7 @@ public class Conversation {
 
         }
         catch (Exception e){
-            System.out.println("Couldn't retrieve nickname from DB of " + userID);
+            System.out.println("Couldn't retrieve nickname from DB of " + userID +": " + e.toString());
             nickname = userID;
         }
 

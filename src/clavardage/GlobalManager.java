@@ -90,7 +90,7 @@ public class GlobalManager implements RemoteConnectionListener, UserListGUIEvent
     @Override
     public void displayHistoryRequestFromGUI(String userID, String remoteUsername){
 
-        ArrayList<Message> messages = cs.getMessagesWith(userID,remoteUsername);
+        ArrayList<Message> messages = cs.getMessagesWith(userID,bs.getLocalUser().getID());
 
         if (messages != null)
             new HistoryWindow("History of conversation with " + remoteUsername, messages);

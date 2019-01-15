@@ -17,6 +17,7 @@ public class Message {
         this.content = content;
         this.fromID = fromID;
         this.toID =toID;
+        this.fromNickname = fromNickname;
       //  DateFormat dateF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.date = date;
     }
@@ -30,6 +31,8 @@ public class Message {
     }
 
     public String getIDSender() { return fromID; }
+
+    public String getSenderNickname() { return fromNickname; }
 
     public void setContent(String content) {
         this.content = content;

@@ -80,7 +80,7 @@ public class HistoryWindow extends JFrame{
 
         dateToDisplay= sdf.format(message.getDate());
 
-        chatBox.append(dateToDisplay + ": <" + message.getIDSender() + "> : " + message.getContent() + "\n");
+        chatBox.append(dateToDisplay + ": <" + message.getSenderNickname() + "> : " + message.getContent() + "\n");
     }
 
 
