@@ -116,7 +116,7 @@ public class ChatWindow extends JFrame implements ActionListener, NewMessageToSe
 	public void notifyRemoteUserLeftInGUI(){
 
 		// Put the information in the chat box
-		chatBox.append("--- Remote User left the conversation. --- \n");
+		chatBox.append("--- " + remoteuser + " left the conversation. --- \n");
 
 		// Freeze the inputs
 		jtf.setEditable(false);
