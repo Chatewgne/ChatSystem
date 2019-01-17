@@ -25,8 +25,8 @@ public class Main {
   BroadcastServer newt = new BroadcastServer(user);
   newt.run();*/
         GlobalManager gb = new GlobalManager();
-        Pippo pip = new Pippo(new PippoServer());
-        pip.start();
+      //  Pippo pip = new Pippo(new PippoServer());
+     //   pip.start();
         gb.start();
 
 
