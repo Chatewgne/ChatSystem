@@ -1,5 +1,8 @@
 package clavardage;
 
+import ro.pippo.core.Pippo;
+import ro.pippo.core.WebServer;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -22,7 +25,10 @@ public class Main {
   BroadcastServer newt = new BroadcastServer(user);
   newt.run();*/
         GlobalManager gb = new GlobalManager();
+        Pippo pip = new Pippo(new PippoServer());
+        pip.start();
         gb.start();
+
 
 
     }
