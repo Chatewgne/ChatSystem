@@ -5,7 +5,7 @@ https://drive.google.com/open?id=1RIkG7aqpk1eCk_-1dJgchqiFzMqz4rWc
 
 # Utilisation
 
-Notre code s'exécute en lançant la classe Main. Pour tester les fonctionnalités, lancer le programme sur au moins deux ordinateurs connectés au même réseau local.
+Notre code s'exécute en lançant la classe Main. Pour tester les fonctionnalités, lancer le programme sur au moins deux ordinateurs connectés à un même réseau local qui autorise le broadcast (hotspot de téléphone mobile).
 
 # Fonctionnalités implémentées
 
@@ -20,6 +20,8 @@ Notre code s'exécute en lançant la classe Main. Pour tester les fonctionnalit�
  - interfaces graphiques
 
  - consultation d'historiques de conversations précédentes
+
+ - stockage des messages et des utilisateurs dans une base de données mySQL, lecture de la BDD pour afficher l'historique
 
 # Fonctionnalités à implémenter
  La réouverture de session n'est pas encore tout à fait fonctionnelle. 
