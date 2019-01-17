@@ -5,7 +5,7 @@ https://drive.google.com/open?id=1RIkG7aqpk1eCk_-1dJgchqiFzMqz4rWc
 
 # Utilisation
 
-Notre code s'exécute en lançant la classe Main. Pour tester les fonctionnalités, lancer le programme sur au moins deux ordinateurs connectés à un même réseau local qui autorise le broadcast (hotspot de téléphone mobile).
+Notre code s'exécute en lançant la classe Main. Pour tester les fonctionnalités, lancer le programme sur au moins deux ordinateurs connectés à un même réseau local qui autorise le broadcast (hotspot de téléphone mobile par exemple).
 
 # Fonctionnalités implémentées
 
